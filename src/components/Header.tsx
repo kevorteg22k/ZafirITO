@@ -8,6 +8,13 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
+  // Sistema corregido: usuarios nuevos inician con 0
+  const userStats = {
+    streak: 0, // Inicia en 0, se suma solo con actividad diaria
+    gems: 0,   // Inicia en 0, se gana con completar actividades
+    hearts: 5  // Inicia con 5 corazones
+  };
+
   return (
     <>
       {/* Top Header */}
@@ -15,88 +22,101 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
         <div className="px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
                 <Book className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-gray-800">Duolingo Bíblico</h1>
+                <h1 className="text-lg font-bold text-gray-800">Sionik App</h1>
+                <p className="text-xs text-gray-600">Fe • Sabiduría • Tecnología</p>
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
-              {/* Streak */}
+              {/* Streak - Corregido para iniciar en 0 */}
               <div className="flex items-center space-x-1">
                 <Flame className="w-5 h-5 text-orange-500" />
-                <span className="text-gray-800 font-bold">7</span>
+                <span className="text-gray-800 font-bold text-sm">{userStats.streak}</span>
               </div>
               
-              {/* Gems */}
+              {/* Gems - Corregido para iniciar en 0 */}
               <div className="flex items-center space-x-1">
                 <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-xs">💎</span>
                 </div>
-                <span className="text-gray-800 font-bold">120</span>
+                <span className="text-gray-800 font-bold text-sm">{userStats.gems}</span>
               </div>
               
               {/* Hearts */}
               <div className="flex items-center space-x-1">
                 <Heart className="w-5 h-5 text-red-500 fill-red-500" />
-                <span className="text-gray-800 font-bold">5</span>
+                <span className="text-gray-800 font-bold text-sm">{userStats.hearts}</span>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+      {/* Bottom Navigation - Mejorado contraste */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 shadow-lg">
         <div className="flex items-center justify-around py-2">
           <button
             onClick={() => setActiveTab('home')}
             className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
               activeTab === 'home' 
-                ? 'text-green-500' 
-                : 'text-gray-500'
+                ? 'text-purple-600 bg-purple-50' 
+                : 'text-gray-600 hover:text-purple-500'
             }`}
           >
             <Home className="w-6 h-6 mb-1" />
-            <span className="text-xs font-medium">Inicio</span>
+            <span className="text-xs font-semibold">Inicio</span>
+          </button>
+          
+          <button
+            onClick={() => setActiveTab('bible')}
+            className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
+              activeTab === 'bible' 
+                ? 'text-purple-600 bg-purple-50' 
+                : 'text-gray-600 hover:text-purple-500'
+            }`}
+          >
+            <Book className="w-6 h-6 mb-1" />
+            <span className="text-xs font-semibold">Biblia</span>
           </button>
           
           <button
             onClick={() => setActiveTab('quests')}
             className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
               activeTab === 'quests' 
-                ? 'text-green-500' 
-                : 'text-gray-500'
+                ? 'text-purple-600 bg-purple-50' 
+                : 'text-gray-600 hover:text-purple-500'
             }`}
           >
             <Trophy className="w-6 h-6 mb-1" />
-            <span className="text-xs font-medium">Misiones</span>
+            <span className="text-xs font-semibold">Misiones</span>
           </button>
           
           <button
             onClick={() => setActiveTab('devotional')}
             className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
               activeTab === 'devotional' 
-                ? 'text-green-500' 
-                : 'text-gray-500'
+                ? 'text-purple-600 bg-purple-50' 
+                : 'text-gray-600 hover:text-purple-500'
             }`}
           >
             <Heart className="w-6 h-6 mb-1" />
-            <span className="text-xs font-medium">Devocional</span>
+            <span className="text-xs font-semibold">Devocional</span>
           </button>
           
           <button
             onClick={() => setActiveTab('profile')}
             className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
               activeTab === 'profile' 
-                ? 'text-green-500' 
-                : 'text-gray-500'
+                ? 'text-purple-600 bg-purple-50' 
+                : 'text-gray-600 hover:text-purple-500'
             }`}
           >
             <User className="w-6 h-6 mb-1" />
-            <span className="text-xs font-medium">Perfil</span>
+            <span className="text-xs font-semibold">Perfil</span>
           </button>
         </div>
       </nav>

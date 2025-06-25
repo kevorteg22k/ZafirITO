@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Header from './Header';
 import LearningPath from './LearningPath';
-import ProgressSection from './ProgressSection';
+import BibleModule from './BibleModule';
 import UserProfile from './UserProfile';
 import DailyDevotional from './DailyDevotional';
 import QuestsAndBadges from './QuestsAndBadges';
@@ -12,6 +12,8 @@ const MainDashboard = () => {
 
   const renderContent = () => {
     switch (activeTab) {
+      case 'bible':
+        return <BibleModule />;
       case 'profile':
         return <UserProfile />;
       case 'devotional':
