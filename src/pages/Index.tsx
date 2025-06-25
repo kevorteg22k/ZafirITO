@@ -1,14 +1,41 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState, useEffect } from 'react';
+import WelcomeAnimation from '../components/WelcomeAnimation';
+import SpiritualLoader from '../components/SpiritualLoader';
+import MainDashboard from '../components/MainDashboard';
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [showLoader, setShowLoader] = useState(false);
+  const [showDashboard, setShowDashboard] = useState(false);
+
+  useEffect(() => {
+    // Secuencia de animaciones al cargar
+    const timer1 = setTimeout(() => {
+      setShowWelcome(false);
+      setShowLoader(true);
+    }, 3000);
+
+    const timer2 = setTimeout(() => {
+      setShowLoader(false);
+      setShowDashboard(true);
+    }, 6000);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, []);
+
+  if (showWelcome) {
+    return <WelcomeAnimation />;
+  }
+
+  if (showLoader) {
+    return <SpiritualLoader />;
+  }
+
+  return <MainDashboard />;
 };
 
 export default Index;
