@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Book, User } from 'lucide-react';
+import { Book, User, Heart } from 'lucide-react';
 
 interface HeaderProps {
   activeTab: string;
@@ -33,6 +33,17 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
               }`}
             >
               Inicio
+            </button>
+            <button
+              onClick={() => setActiveTab('devotional')}
+              className={`flex items-center space-x-2 text-sm font-medium transition-colors ${
+                activeTab === 'devotional' 
+                  ? 'text-primary border-b-2 border-primary pb-1' 
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <Heart className="w-4 h-4" />
+              <span>Devocional</span>
             </button>
             <button
               onClick={() => setActiveTab('profile')}

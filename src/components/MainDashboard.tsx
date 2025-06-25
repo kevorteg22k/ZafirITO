@@ -5,6 +5,7 @@ import DailyVerse from './DailyVerse';
 import ModuleGrid from './ModuleGrid';
 import ProgressSection from './ProgressSection';
 import UserProfile from './UserProfile';
+import DailyDevotional from './DailyDevotional';
 
 const MainDashboard = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -13,6 +14,8 @@ const MainDashboard = () => {
     switch (activeTab) {
       case 'profile':
         return <UserProfile />;
+      case 'devotional':
+        return <DailyDevotional />;
       default:
         return (
           <div className="space-y-8">

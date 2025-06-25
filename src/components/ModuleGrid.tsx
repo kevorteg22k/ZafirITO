@@ -1,5 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import VersoMix from './games/VersoMix';
+import Emojiverso from './games/Emojiverso';
+import RellenoDivino from './games/RellenoDivino';
 
 const modules = [
   {
@@ -65,6 +68,9 @@ const modules = [
 ];
 
 const ModuleGrid = () => {
+  const [activeGame, setActiveGame] = useState<string | null>(null);
+  const [userXP, setUserXP] = useState(0);
+
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'Fácil': return 'text-green-500';
@@ -75,17 +81,51 @@ const ModuleGrid = () => {
     }
   };
 
+  const handleModuleClick = (moduleId: string, isLocked: boolean) => {
+    if (!isLocked) {
+      setActiveGame(moduleId);
+    }
+  };
+
+  const handleGameComplete = (xp: number) => {
+    setUserXP(prev => prev + xp);
+    setActiveGame(null);
+    // Aquí podrías actualizar el estado del módulo como completado
+    console.log(`Juego completado! +${xp} XP ganados. Total: ${userXP + xp}`);
+  };
+
+  const handleGameExit = () => {
+    setActiveGame(null);
+  };
+
+  // Render game component based on activeGame
+  if (activeGame === 'verso-mix') {
+    return <VersoMix onComplete={handleGameComplete} onExit={handleGameExit} />;
+  }
+  
+  if (activeGame === 'emojiverso') {
+    return <Emojiverso onComplete={handleGameComplete} onExit={handleGameExit} />;
+  }
+  
+  if (activeGame === 'relleno-divino') {
+    return <RellenoDivino onComplete={handleGameComplete} onExit={handleGameExit} />;
+  }
+
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
         <h2 className="text-3xl font-bold text-primary">Módulos de Aprendizaje</h2>
         <p className="text-muted-foreground">Elige tu aventura espiritual</p>
+        {userXP > 0 && (
+          <p className="text-sm font-medium text-accent">XP Total: {userXP}</p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {modules.map((module) => (
           <div
             key={module.id}
+            onClick={() => handleModuleClick(module.id, module.locked)}
             className={`relative group rounded-xl border transition-all duration-300 hover:scale-105 ${
               module.locked 
                 ? 'bg-muted/50 border-muted cursor-not-allowed opacity-60' 
