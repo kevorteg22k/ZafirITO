@@ -10,8 +10,13 @@ const biblicalCuriosities = [
   "El Salmo 119 es el capítulo más largo con 176 versículos.",
   "La Biblia ha sido traducida a más de 3,000 idiomas.",
   "El nombre 'Jesús' aparece 973 veces en el Nuevo Testamento.",
-  "El libro de Esdras menciona el nombre de Dios 29 veces en un solo capítulo.",
-  "La palabra 'oración' aparece más de 300 veces en la Biblia."
+  "La Biblia fue escrita en 3 continentes: Asia, África y Europa.",
+  "El libro de Job es considerado uno de los más antiguos de la Biblia.",
+  "La palabra 'Aleluya' significa 'Alabad al Señor' en hebreo.",
+  "El Antiguo Testamento tiene 39 libros y el Nuevo Testamento 27.",
+  "La Biblia contiene 66 libros en total.",
+  "El libro más corto de la Biblia es 2 Juan con solo 13 versículos.",
+  "La palabra 'oro' aparece más de 400 veces en la Biblia."
 ];
 
 const inspirationalPhrases = [
@@ -22,7 +27,9 @@ const inspirationalPhrases = [
   "Despertando el discípulo que hay en ti...",
   "Fortaleciendo tu espíritu...",
   "Abriendo tesoros celestiales...",
-  "Encendiendo la luz de la verdad..."
+  "Encendiendo la luz de la verdad...",
+  "Preparando tu jornada espiritual...",
+  "Cargando bendiciones digitales..."
 ];
 
 interface BiblicalLoaderProps {
@@ -101,7 +108,7 @@ const BiblicalLoader: React.FC<BiblicalLoaderProps> = ({ onComplete, duration = 
         {/* Nombre de la app */}
         <div className="space-y-2">
           <h1 className="text-3xl font-bold text-white">Sionik App</h1>
-          <p className="text-purple-200 text-sm">Fe • Sabiduría • Tecnología</p>
+          <p className="text-purple-200 text-sm font-medium">Fe • Sabiduría • Tecnología</p>
         </div>
 
         {/* Frase inspiracional */}
@@ -117,16 +124,16 @@ const BiblicalLoader: React.FC<BiblicalLoaderProps> = ({ onComplete, duration = 
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="text-sm text-purple-200">{Math.round(progress)}%</p>
+          <p className="text-sm text-purple-200 font-medium">{Math.round(progress)}%</p>
         </div>
 
         {/* Curiosidad bíblica */}
         <div className={`transition-all duration-500 ${showCuriosity ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-            <h3 className="text-sm font-medium text-yellow-300 mb-2 flex items-center justify-center">
+            <h3 className="text-sm font-bold text-yellow-300 mb-2 flex items-center justify-center">
               💡 Curiosidad Bíblica
             </h3>
-            <p className="text-sm text-white/90 leading-relaxed">
+            <p className="text-sm text-white/90 leading-relaxed font-medium">
               {biblicalCuriosities[currentCuriosity]}
             </p>
           </div>
