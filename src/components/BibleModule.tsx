@@ -15,7 +15,8 @@ const BibleModule = () => {
   const translations = [
     { code: 'rvr1960', name: 'Reina Valera 1960' },
     { code: 'lta', name: 'Lenguaje Actual' },
-    { code: 'pdt', name: 'Palabra de Dios para Todos' }
+    { code: 'pdt', name: 'Palabra de Dios para Todos' },
+    { code: 'bla', name: 'Biblia de las Américas' }
   ];
 
   const searchVerse = async () => {
@@ -25,8 +26,11 @@ const BibleModule = () => {
     setError('');
     
     try {
+      console.log('Buscando versículo:', searchTerm, 'traducción:', translation);
       const response = await fetch(`https://bible-api.com/${encodeURIComponent(searchTerm)}?translation=${translation}`);
       const data = await response.json();
+      
+      console.log('Respuesta de la API:', data);
       
       if (data.error) {
         setError('Versículo no encontrado. Intenta con formato "Juan 3:16"');
@@ -35,6 +39,7 @@ const BibleModule = () => {
         setVerseData(data);
       }
     } catch (err) {
+      console.error('Error al buscar versículo:', err);
       setError('Error al buscar el versículo. Verifica tu conexión.');
       setVerseData(null);
     } finally {
@@ -45,6 +50,7 @@ const BibleModule = () => {
   const addToFavorites = () => {
     if (verseData && !favorites.find(fav => fav.reference === verseData.reference)) {
       setFavorites([...favorites, verseData]);
+      console.log('Versículo agregado a favoritos:', verseData.reference);
     }
   };
 
@@ -63,7 +69,7 @@ const BibleModule = () => {
         {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-bold text-gray-900">📖 Biblia</h1>
-          <p className="text-gray-700">Explora la Palabra de Dios</p>
+          <p className="text-gray-800 font-medium">Explora la Palabra de Dios</p>
         </div>
 
         {/* Buscador */}
@@ -76,7 +82,7 @@ const BibleModule = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && searchVerse()}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
             
@@ -84,10 +90,10 @@ const BibleModule = () => {
               <select
                 value={translation}
                 onChange={(e) => setTranslation(e.target.value)}
-                className="px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 {translations.map(trans => (
-                  <option key={trans.code} value={trans.code}>
+                  <option key={trans.code} value={trans.code} className="text-gray-900 bg-white">
                     {trans.name}
                   </option>
                 ))}
@@ -108,7 +114,7 @@ const BibleModule = () => {
         {/* Error */}
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-red-800 font-medium">{error}</p>
+            <p className="text-red-800 font-bold">{error}</p>
           </div>
         )}
 
@@ -117,10 +123,10 @@ const BibleModule = () => {
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 space-y-4">
             <div className="text-center space-y-3">
               <h2 className="text-xl font-bold text-purple-600">{verseData.reference}</h2>
-              <blockquote className="text-lg leading-relaxed text-gray-900 font-medium px-4 py-2 bg-gray-50 rounded-lg">
+              <blockquote className="text-lg leading-relaxed text-gray-900 font-semibold px-4 py-4 bg-gray-50 rounded-lg border-l-4 border-purple-500">
                 "{verseData.text}"
               </blockquote>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-700 font-medium">
                 Traducción: {translations.find(t => t.code === translation)?.name}
               </p>
             </div>
@@ -128,7 +134,7 @@ const BibleModule = () => {
             <div className="flex flex-wrap justify-center gap-3 pt-4">
               <button
                 onClick={addToFavorites}
-                className="flex items-center px-4 py-2 bg-red-50 text-red-600 rounded-lg border border-red-200 hover:bg-red-100 transition-colors"
+                className="flex items-center px-4 py-2 bg-red-50 text-red-700 rounded-lg border border-red-200 hover:bg-red-100 transition-colors font-medium"
               >
                 <Heart className="w-4 h-4 mr-2" />
                 Favorito
@@ -136,7 +142,7 @@ const BibleModule = () => {
               
               <button
                 onClick={() => setShowReflection(true)}
-                className="flex items-center px-4 py-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors"
+                className="flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors font-medium"
               >
                 <MessageCircle className="w-4 h-4 mr-2" />
                 Reflexionar
@@ -154,7 +160,7 @@ const BibleModule = () => {
                 value={reflection}
                 onChange={(e) => setReflection(e.target.value)}
                 placeholder="Escribe tu reflexión sobre este versículo..."
-                className="w-full h-32 p-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full h-32 p-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
               <div className="flex gap-3">
                 <button
@@ -165,7 +171,7 @@ const BibleModule = () => {
                 </button>
                 <button
                   onClick={() => setShowReflection(false)}
-                  className="flex-1 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+                  className="flex-1 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300 transition-colors"
                 >
                   Cancelar
                 </button>
@@ -183,9 +189,9 @@ const BibleModule = () => {
             </h3>
             <div className="space-y-3">
               {favorites.slice(0, 3).map((fav, index) => (
-                <div key={index} className="p-3 bg-gray-50 rounded-lg">
-                  <p className="font-medium text-purple-600 text-sm">{fav.reference}</p>
-                  <p className="text-gray-800 text-sm mt-1">"{fav.text.substring(0, 100)}..."</p>
+                <div key={index} className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <p className="font-bold text-purple-600 text-sm">{fav.reference}</p>
+                  <p className="text-gray-900 text-sm mt-1 font-medium">"{fav.text.substring(0, 100)}..."</p>
                 </div>
               ))}
             </div>
@@ -195,10 +201,10 @@ const BibleModule = () => {
         {/* Versículo del día */}
         <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl p-6 text-white">
           <h3 className="text-lg font-bold mb-3 text-center">✨ Versículo del Día</h3>
-          <blockquote className="text-center italic text-lg mb-2">
+          <blockquote className="text-center italic text-lg mb-2 font-medium">
             "Todo lo puedo en Cristo que me fortalece"
           </blockquote>
-          <p className="text-center text-sm opacity-90">— Filipenses 4:13</p>
+          <p className="text-center text-sm opacity-90 font-medium">— Filipenses 4:13</p>
         </div>
 
       </div>

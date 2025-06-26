@@ -112,7 +112,7 @@ const VersoCompleto: React.FC<VersoCompletoProps> = ({ onComplete, onExit }) => 
         <div className="flex items-center justify-between">
           <button 
             onClick={onExit}
-            className="text-white hover:text-gray-200 flex items-center space-x-2"
+            className="text-white hover:text-gray-200 flex items-center space-x-2 font-bold"
           >
             <X className="w-6 h-6" />
           </button>
@@ -145,10 +145,10 @@ const VersoCompleto: React.FC<VersoCompletoProps> = ({ onComplete, onExit }) => 
 
         {/* Question */}
         <div className="bg-white rounded-2xl p-6 shadow-xl">
-          <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">
             ¿Cuál es el versículo correcto?
           </h2>
-          <p className="text-lg text-gray-600 text-center mb-2">
+          <p className="text-lg text-gray-800 text-center mb-2 font-semibold">
             {question.reference}
           </p>
         </div>
@@ -159,7 +159,7 @@ const VersoCompleto: React.FC<VersoCompletoProps> = ({ onComplete, onExit }) => 
             <button
               key={index}
               onClick={() => handleOptionSelect(index)}
-              className={`w-full p-4 rounded-xl text-left transition-all duration-200 ${
+              className={`w-full p-4 rounded-xl text-left transition-all duration-200 font-semibold ${
                 selectedOption === index
                   ? showResult
                     ? index === question.correct
@@ -168,11 +168,11 @@ const VersoCompleto: React.FC<VersoCompletoProps> = ({ onComplete, onExit }) => 
                     : 'bg-blue-500 text-white border-2 border-blue-400'
                   : showResult && index === question.correct
                     ? 'bg-green-500 text-white border-2 border-green-400'
-                    : 'bg-white text-gray-800 border-2 border-gray-200 hover:border-blue-300'
+                    : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-blue-300'
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="font-medium">{option}</span>
+                <span className="font-bold text-base">{option}</span>
                 {showResult && index === question.correct && (
                   <Check className="w-6 h-6 text-white" />
                 )}
@@ -205,7 +205,7 @@ const VersoCompleto: React.FC<VersoCompletoProps> = ({ onComplete, onExit }) => 
             }`}>
               {selectedOption === question.correct ? '¡Correcto!' : selectedOption === -1 ? '¡Tiempo agotado!' : '¡Incorrecto!'}
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-800 mb-4 font-medium">
               {question.explanation}
             </p>
             {selectedOption === question.correct && (

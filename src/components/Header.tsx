@@ -25,8 +25,8 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
                 <Book className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-gray-900">Sionik App</h1>
-                <p className="text-xs text-gray-700 font-medium">Fe • Sabiduría • Tecnología</p>
+                <h1 className="text-lg font-bold text-gray-900">ZafiriGo</h1>
+                <p className="text-xs text-gray-800 font-medium">Juega. Aprende. Camina con Dios.</p>
               </div>
             </div>
 
@@ -63,7 +63,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
               activeTab === 'home' 
                 ? 'text-purple-600 bg-purple-50' 
-                : 'text-gray-700 hover:text-purple-500'
+                : 'text-gray-800 hover:text-purple-500'
             }`}
           >
             <Home className="w-6 h-6 mb-1" />
@@ -75,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
               activeTab === 'bible' 
                 ? 'text-purple-600 bg-purple-50' 
-                : 'text-gray-700 hover:text-purple-500'
+                : 'text-gray-800 hover:text-purple-500'
             }`}
           >
             <Book className="w-6 h-6 mb-1" />
@@ -87,7 +87,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
               activeTab === 'quests' 
                 ? 'text-purple-600 bg-purple-50' 
-                : 'text-gray-700 hover:text-purple-500'
+                : 'text-gray-800 hover:text-purple-500'
             }`}
           >
             <Trophy className="w-6 h-6 mb-1" />
@@ -99,7 +99,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
               activeTab === 'devotional' 
                 ? 'text-purple-600 bg-purple-50' 
-                : 'text-gray-700 hover:text-purple-500'
+                : 'text-gray-800 hover:text-purple-500'
             }`}
           >
             <Heart className="w-6 h-6 mb-1" />
@@ -111,7 +111,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
               activeTab === 'profile' 
                 ? 'text-purple-600 bg-purple-50' 
-                : 'text-gray-700 hover:text-purple-500'
+                : 'text-gray-800 hover:text-purple-500'
             }`}
           >
             <User className="w-6 h-6 mb-1" />

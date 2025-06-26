@@ -4,11 +4,11 @@ import React, { useState, useEffect } from 'react';
 const biblicalCuriosities = [
   "¿Sabías que la Biblia fue escrita por más de 40 autores diferentes a lo largo de 1,500 años?",
   "El libro de Salmos es el más largo de la Biblia con 150 capítulos.",
-  "La palabra 'amor' aparece más de 500 veces en la Biblia.",
+  "La palabra 'amor' aparece más de 500 veces en la Biblia.",  
   "Jesús contó más de 40 parábolas registradas en los Evangelios.",
   "El versículo más corto de la Biblia está en Juan 11:35: 'Jesús lloró'.",
   "El Salmo 119 es el capítulo más largo con 176 versículos.",
-  "La Biblia ha sido traducida a más de 3,000 idiomas.",
+  "La Biblia ha sido traducida a más de 3,000 idiomas diferentes.",
   "El nombre 'Jesús' aparece 973 veces en el Nuevo Testamento.",
   "La Biblia fue escrita en 3 continentes: Asia, África y Europa.",
   "El libro de Job es considerado uno de los más antiguos de la Biblia.",
@@ -16,7 +16,12 @@ const biblicalCuriosities = [
   "El Antiguo Testamento tiene 39 libros y el Nuevo Testamento 27.",
   "La Biblia contiene 66 libros en total.",
   "El libro más corto de la Biblia es 2 Juan con solo 13 versículos.",
-  "La palabra 'oro' aparece más de 400 veces en la Biblia."
+  "La palabra 'oro' aparece más de 400 veces en la Biblia.",
+  "Matusalén vivió 969 años según Génesis 5:27.",
+  "El libro de Ester es el único que no menciona a Dios directamente.",
+  "La Biblia fue el primer libro impreso en la imprenta de Gutenberg.",
+  "El versículo central de la Biblia es Salmos 118:8.",
+  "La palabra 'no temas' aparece 365 veces en la Biblia."
 ];
 
 const inspirationalPhrases = [
@@ -29,7 +34,9 @@ const inspirationalPhrases = [
   "Abriendo tesoros celestiales...",
   "Encendiendo la luz de la verdad...",
   "Preparando tu jornada espiritual...",
-  "Cargando bendiciones digitales..."
+  "Cargando bendiciones digitales...",
+  "Activando modo devocional...",
+  "Sincronizando con el Espíritu Santo..."
 ];
 
 interface BiblicalLoaderProps {
@@ -107,13 +114,13 @@ const BiblicalLoader: React.FC<BiblicalLoaderProps> = ({ onComplete, duration = 
 
         {/* Nombre de la app */}
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-white">Sionik App</h1>
-          <p className="text-purple-200 text-sm font-medium">Fe • Sabiduría • Tecnología</p>
+          <h1 className="text-3xl font-bold text-white">ZafiriGo</h1>
+          <p className="text-purple-200 text-sm font-bold">Juega. Aprende. Camina con Dios.</p>
         </div>
 
         {/* Frase inspiracional */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-white min-h-[3rem] flex items-center justify-center">
+          <h2 className="text-xl font-bold text-white min-h-[3rem] flex items-center justify-center">
             {inspirationalPhrases[currentPhrase]}
           </h2>
           
@@ -124,7 +131,7 @@ const BiblicalLoader: React.FC<BiblicalLoaderProps> = ({ onComplete, duration = 
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="text-sm text-purple-200 font-medium">{Math.round(progress)}%</p>
+          <p className="text-sm text-purple-200 font-bold">{Math.round(progress)}%</p>
         </div>
 
         {/* Curiosidad bíblica */}
@@ -133,7 +140,7 @@ const BiblicalLoader: React.FC<BiblicalLoaderProps> = ({ onComplete, duration = 
             <h3 className="text-sm font-bold text-yellow-300 mb-2 flex items-center justify-center">
               💡 Curiosidad Bíblica
             </h3>
-            <p className="text-sm text-white/90 leading-relaxed font-medium">
+            <p className="text-sm text-white font-bold leading-relaxed">
               {biblicalCuriosities[currentCuriosity]}
             </p>
           </div>

@@ -78,19 +78,19 @@ const VersoMix: React.FC<VersoMixProps> = ({ onComplete, onExit }) => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4">
+    <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-2xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <button 
             onClick={onExit}
-            className="text-muted-foreground hover:text-foreground"
+            className="text-gray-800 hover:text-gray-900 font-bold"
           >
             ← Salir
           </button>
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-primary">📖 Verso Mix</h1>
-            <p className="text-sm text-muted-foreground">
+            <h1 className="text-2xl font-bold text-purple-600">📖 Verso Mix</h1>
+            <p className="text-sm text-gray-700 font-medium">
               Verso {currentVerse + 1} de {verses.length}
             </p>
           </div>
@@ -98,22 +98,22 @@ const VersoMix: React.FC<VersoMixProps> = ({ onComplete, onExit }) => {
         </div>
 
         {/* Instructions */}
-        <div className="glass-effect rounded-xl p-6 text-center">
-          <h2 className="text-lg font-semibold mb-2">Ordena las palabras correctamente</h2>
-          <p className="text-sm text-muted-foreground">
+        <div className="bg-white rounded-xl p-6 text-center border border-gray-200">
+          <h2 className="text-lg font-semibold mb-2 text-gray-900">Ordena las palabras correctamente</h2>
+          <p className="text-sm text-gray-700 font-medium">
             {verse.reference}
           </p>
         </div>
 
         {/* Selected words area */}
-        <div className="glass-effect rounded-xl p-6 min-h-[120px]">
-          <h3 className="text-sm font-medium text-accent mb-4">Tu respuesta:</h3>
+        <div className="bg-white rounded-xl p-6 min-h-[120px] border border-gray-200">
+          <h3 className="text-sm font-medium text-purple-600 mb-4">Tu respuesta:</h3>
           <div className="flex flex-wrap gap-2 mb-4 min-h-[60px]">
             {selectedWords.map((word, index) => (
               <button
                 key={`selected-${index}`}
                 onClick={() => handleSelectedWordClick(index)}
-                className="px-3 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+                className="px-3 py-2 bg-purple-500 text-white rounded-lg text-sm font-bold hover:bg-purple-600 transition-colors"
               >
                 {word}
               </button>
@@ -124,14 +124,14 @@ const VersoMix: React.FC<VersoMixProps> = ({ onComplete, onExit }) => {
             <div className="flex gap-2">
               <button
                 onClick={checkAnswer}
-                className="flex items-center gap-2 px-4 py-2 spiritual-gradient text-white rounded-lg font-medium hover:scale-105 transition-transform"
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg font-bold hover:scale-105 transition-transform"
               >
                 <Check className="w-4 h-4" />
                 Verificar
               </button>
               <button
                 onClick={resetVerse}
-                className="flex items-center gap-2 px-4 py-2 glass-effect border border-primary/20 text-primary rounded-lg font-medium hover:bg-primary/5 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-purple-300 text-purple-600 rounded-lg font-bold hover:bg-purple-50 transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
                 Reiniciar
@@ -141,14 +141,14 @@ const VersoMix: React.FC<VersoMixProps> = ({ onComplete, onExit }) => {
         </div>
 
         {/* Available words */}
-        <div className="glass-effect rounded-xl p-6">
-          <h3 className="text-sm font-medium text-accent mb-4">Palabras disponibles:</h3>
+        <div className="bg-white rounded-xl p-6 border border-gray-200">
+          <h3 className="text-sm font-medium text-purple-600 mb-4">Palabras disponibles:</h3>
           <div className="flex flex-wrap gap-2">
             {shuffledWords.map((word, index) => (
               <button
                 key={`shuffled-${index}`}
                 onClick={() => handleWordClick(word, index)}
-                className="px-3 py-2 bg-muted hover:bg-muted/80 text-foreground rounded-lg text-sm font-medium transition-colors"
+                className="px-3 py-2 bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-lg text-sm font-bold transition-colors"
               >
                 {word}
               </button>
@@ -158,23 +158,23 @@ const VersoMix: React.FC<VersoMixProps> = ({ onComplete, onExit }) => {
 
         {/* Result */}
         {showResult && (
-          <div className={`glass-effect rounded-xl p-6 text-center ${
-            isCorrect ? 'border-green-500/50' : 'border-red-500/50'
+          <div className={`bg-white rounded-xl p-6 text-center border-2 ${
+            isCorrect ? 'border-green-500' : 'border-red-500'
           }`}>
             <div className="text-4xl mb-2">
               {isCorrect ? '🎉' : '😔'}
             </div>
-            <h3 className={`text-lg font-semibold mb-2 ${
-              isCorrect ? 'text-green-500' : 'text-red-500'
+            <h3 className={`text-lg font-bold mb-2 ${
+              isCorrect ? 'text-green-600' : 'text-red-600'
             }`}>
               {isCorrect ? '¡Correcto!' : '¡Inténtalo de nuevo!'}
             </h3>
             {isCorrect && (
               <>
-                <p className="text-sm text-muted-foreground mb-2">
+                <p className="text-sm text-gray-800 mb-2 font-medium">
                   "{verse.text}"
                 </p>
-                <p className="text-xs font-medium text-accent">
+                <p className="text-xs font-bold text-purple-600">
                   +15 XP ganados
                 </p>
               </>
