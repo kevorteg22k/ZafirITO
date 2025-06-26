@@ -1,33 +1,37 @@
 
 import React from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { useGameProgress } from '@/hooks/useGameProgress';
 
 const UserProfile = () => {
-  // Datos de ejemplo - en el futuro vendrán del backend
+  const { user, isGuest, signOut } = useAuth();
+  const { progress } = useGameProgress();
+
   const userProfile = {
-    name: "Ana María",
-    level: "Discípulo Fiel",
-    avatar: "👩‍🦱",
-    country: "🇨🇴 Colombia",
+    name: user?.email?.split('@')[0] || (isGuest ? "Invitado" : "Usuario"),
+    level: progress.totalXP < 50 ? "Nuevo Discípulo" : progress.totalXP < 200 ? "Discípulo Fiel" : "León de Judá",
+    avatar: isGuest ? "👤" : "👩‍🦱",
+    country: "🌍 Global",
     favoriteVerse: "Todo lo puedo en Cristo que me fortalece - Filipenses 4:13",
     stats: {
-      currentStreak: 7,
-      totalXP: 1250,
-      devotionalsCompleted: 45,
-      modulesCompleted: 12
+      currentStreak: progress.currentStreak,
+      totalXP: progress.totalXP,
+      devotionalsCompleted: 0, // TODO: Implementar devocionales
+      modulesCompleted: progress.completedLevels.length
     }
   };
 
   const badges = [
-    { name: "León de Judá", emoji: "🦁", earned: true },
-    { name: "Embajador del Reino", emoji: "👑", earned: true },
-    { name: "Luz del Mundo", emoji: "💡", earned: false },
+    { name: "León de Judá", emoji: "🦁", earned: progress.totalXP >= 200 },
+    { name: "Embajador del Reino", emoji: "👑", earned: progress.currentStreak >= 7 },
+    { name: "Luz del Mundo", emoji: "💡", earned: progress.completedLevels.length >= 3 },
     { name: "Pescador de Hombres", emoji: "🎣", earned: false },
     { name: "Guerrero de Oración", emoji: "⚔️", earned: false },
-    { name: "Corazón Puro", emoji: "💎", earned: false }
+    { name: "Corazón Puro", emoji: "💎", earned: progress.totalXP >= 500 }
   ];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-4xl mx-auto space-y-8 p-4">
       {/* Header del Perfil */}
       <div className="glass-effect rounded-2xl p-8">
         <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
@@ -38,6 +42,11 @@ const UserProfile = () => {
             <div className="space-y-1">
               <p className="text-lg text-accent font-medium">{userProfile.level}</p>
               <p className="text-sm text-muted-foreground">{userProfile.country}</p>
+              {isGuest && (
+                <p className="text-sm text-yellow-400 font-medium">
+                  🎯 Modo Invitado - Regístrate para guardar tu progreso
+                </p>
+              )}
             </div>
             
             <div className="glass-effect rounded-lg p-4 max-w-md">
@@ -105,12 +114,22 @@ const UserProfile = () => {
 
       {/* Acciones del Perfil */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <button className="px-6 py-3 spiritual-gradient text-white rounded-xl font-medium hover:scale-105 transition-transform duration-200">
-          ✏️ Editar Perfil
-        </button>
+        {!isGuest && (
+          <button className="px-6 py-3 spiritual-gradient text-white rounded-xl font-medium hover:scale-105 transition-transform duration-200">
+            ✏️ Editar Perfil
+          </button>
+        )}
         <button className="px-6 py-3 glass-effect border border-primary/20 text-primary rounded-xl font-medium hover:bg-primary/5 transition-colors duration-200">
           📊 Ver Progreso Detallado
         </button>
+        {(user || isGuest) && (
+          <button 
+            onClick={signOut}
+            className="px-6 py-3 bg-red-500/20 border border-red-500/20 text-red-400 rounded-xl font-medium hover:bg-red-500/30 transition-colors duration-200"
+          >
+            🚪 {isGuest ? 'Salir del Modo Invitado' : 'Cerrar Sesión'}
+          </button>
+        )}
       </div>
     </div>
   );
