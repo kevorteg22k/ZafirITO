@@ -8,17 +8,16 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
-  // Sistema corregido: usuarios nuevos inician con 0
   const userStats = {
-    streak: 0, // Inicia en 0, se suma solo con actividad diaria
-    gems: 0,   // Inicia en 0, se gana con completar actividades
-    hearts: 5  // Inicia con 5 corazones
+    streak: 0,
+    gems: 0,
+    hearts: 5
   };
 
   return (
     <>
       {/* Top Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
+      <header className="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-200">
         <div className="px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -32,13 +31,13 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
             </div>
 
             <div className="flex items-center space-x-4">
-              {/* Streak - Corregido para iniciar en 0 */}
+              {/* Streak */}
               <div className="flex items-center space-x-1">
                 <Flame className="w-5 h-5 text-orange-500" />
                 <span className="text-gray-900 font-bold text-sm">{userStats.streak}</span>
               </div>
               
-              {/* Gems - Corregido para iniciar en 0 */}
+              {/* Gems */}
               <div className="flex items-center space-x-1">
                 <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-xs">💎</span>
@@ -56,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
         </div>
       </header>
 
-      {/* Bottom Navigation - Mejorado contraste y legibilidad */}
+      {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 shadow-lg">
         <div className="flex items-center justify-around py-2">
           <button

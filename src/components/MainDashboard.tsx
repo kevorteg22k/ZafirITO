@@ -26,7 +26,7 @@ const MainDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-50">
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
       
       <main className="pb-20">
