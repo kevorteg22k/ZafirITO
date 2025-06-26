@@ -1,16 +1,32 @@
 
 import React, { useState, useEffect } from 'react';
-import { Search, Heart, BookOpen, ChevronDown, Star, MessageCircle } from 'lucide-react';
+import { Search, Heart, Star, MessageCircle, BookOpen, RefreshCw } from 'lucide-react';
+
+interface VerseData {
+  reference: string;
+  text: string;
+  translation_id: string;
+  translation_name: string;
+  translation_note: string;
+}
+
+interface BibleBook {
+  name: string;
+  testament: string;
+  chapters: number;
+}
 
 const BibleModule = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [translation, setTranslation] = useState('rvr1960');
-  const [verseData, setVerseData] = useState(null);
+  const [verseData, setVerseData] = useState<VerseData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState<VerseData[]>([]);
   const [reflection, setReflection] = useState('');
   const [showReflection, setShowReflection] = useState(false);
+  const [verseOfTheDay, setVerseOfTheDay] = useState<VerseData | null>(null);
+  const [books, setBooks] = useState<BibleBook[]>([]);
 
   const translations = [
     { code: 'rvr1960', name: 'Reina Valera 1960' },
@@ -18,6 +34,49 @@ const BibleModule = () => {
     { code: 'pdt', name: 'Palabra de Dios para Todos' },
     { code: 'bla', name: 'Biblia de las Américas' }
   ];
+
+  const dailyVerses = [
+    'Juan 3:16',
+    'Filipenses 4:13',
+    'Salmos 23:1',
+    'Romanos 8:28',
+    'Proverbios 3:5-6',
+    'Isaías 41:10',
+    'Jeremías 29:11',
+    'Mateo 6:33'
+  ];
+
+  useEffect(() => {
+    loadVerseOfTheDay();
+    loadBooks();
+  }, []);
+
+  const loadBooks = async () => {
+    try {
+      const response = await fetch('https://bible-api.com/books');
+      if (response.ok) {
+        const data = await response.json();
+        setBooks(data);
+      }
+    } catch (err) {
+      console.error('Error loading books:', err);
+    }
+  };
+
+  const loadVerseOfTheDay = async () => {
+    const todayIndex = new Date().getDate() % dailyVerses.length;
+    const todayVerse = dailyVerses[todayIndex];
+    
+    try {
+      const response = await fetch(`https://bible-api.com/${encodeURIComponent(todayVerse)}?translation=rvr1960`);
+      if (response.ok) {
+        const data = await response.json();
+        setVerseOfTheDay(data);
+      }
+    } catch (err) {
+      console.error('Error loading verse of the day:', err);
+    }
+  };
 
   const searchVerse = async () => {
     if (!searchTerm.trim()) return;
@@ -28,19 +87,23 @@ const BibleModule = () => {
     try {
       console.log('Buscando versículo:', searchTerm, 'traducción:', translation);
       const response = await fetch(`https://bible-api.com/${encodeURIComponent(searchTerm)}?translation=${translation}`);
-      const data = await response.json();
       
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
       console.log('Respuesta de la API:', data);
       
-      if (data.error) {
-        setError('Versículo no encontrado. Intenta con formato "Juan 3:16"');
+      if (data.error || !data.text) {
+        setError('Versículo no encontrado. Intenta con formato "Juan 3:16" o "Salmos 23:1"');
         setVerseData(null);
       } else {
         setVerseData(data);
       }
     } catch (err) {
       console.error('Error al buscar versículo:', err);
-      setError('Error al buscar el versículo. Verifica tu conexión.');
+      setError('Error al buscar el versículo. Verifica tu conexión a internet.');
       setVerseData(null);
     } finally {
       setLoading(false);
@@ -59,21 +122,38 @@ const BibleModule = () => {
       console.log('Reflexión guardada:', reflection);
       setShowReflection(false);
       setReflection('');
+      // Aquí se guardaría en Supabase
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-slate-900 pb-20">
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
         
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold text-gray-900">📖 Biblia</h1>
-          <p className="text-gray-800 font-medium">Explora la Palabra de Dios</p>
+          <h1 className="text-3xl font-bold text-slate-100">📖 Biblia</h1>
+          <p className="text-slate-300 font-medium">Explora la Palabra de Dios</p>
         </div>
 
+        {/* Versículo del día */}
+        {verseOfTheDay && (
+          <div className="zafirigo-card p-6 animate-divine-pulse">
+            <h3 className="text-lg font-bold mb-3 text-center text-slate-100 flex items-center justify-center">
+              <Star className="w-5 h-5 mr-2 text-yellow-400" />
+              Versículo del Día
+            </h3>
+            <blockquote className="text-center italic text-lg mb-3 text-slate-200 font-medium">
+              "{verseOfTheDay.text}"
+            </blockquote>
+            <p className="text-center text-sm text-slate-400 font-medium">
+              — {verseOfTheDay.reference}
+            </p>
+          </div>
+        )}
+
         {/* Buscador */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 space-y-4">
+        <div className="zafirigo-card p-6 space-y-4">
           <div className="flex flex-col space-y-4">
             <div className="flex-1">
               <input
@@ -82,7 +162,7 @@ const BibleModule = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && searchVerse()}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-slate-600 rounded-lg text-slate-100 bg-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
             
@@ -90,10 +170,10 @@ const BibleModule = () => {
               <select
                 value={translation}
                 onChange={(e) => setTranslation(e.target.value)}
-                className="px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="px-4 py-3 border border-slate-600 rounded-lg text-slate-100 bg-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 {translations.map(trans => (
-                  <option key={trans.code} value={trans.code} className="text-gray-900 bg-white">
+                  <option key={trans.code} value={trans.code} className="text-slate-100 bg-slate-700">
                     {trans.name}
                   </option>
                 ))}
@@ -102,9 +182,13 @@ const BibleModule = () => {
               <button
                 onClick={searchVerse}
                 disabled={loading}
-                className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-blue-600 transition-all duration-200 disabled:opacity-50"
+                className="zafirigo-button flex items-center justify-center disabled:opacity-50"
               >
-                <Search className="w-4 h-4 mr-2" />
+                {loading ? (
+                  <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <Search className="w-4 h-4 mr-2" />
+                )}
                 {loading ? 'Buscando...' : 'Buscar'}
               </button>
             </div>
@@ -113,20 +197,20 @@ const BibleModule = () => {
 
         {/* Error */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-red-800 font-bold">{error}</p>
+          <div className="bg-red-900/50 border border-red-500 rounded-lg p-4">
+            <p className="text-red-200 font-bold">{error}</p>
           </div>
         )}
 
         {/* Resultado del versículo */}
         {verseData && (
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 space-y-4">
+          <div className="zafirigo-card p-6 space-y-4">
             <div className="text-center space-y-3">
-              <h2 className="text-xl font-bold text-purple-600">{verseData.reference}</h2>
-              <blockquote className="text-lg leading-relaxed text-gray-900 font-semibold px-4 py-4 bg-gray-50 rounded-lg border-l-4 border-purple-500">
+              <h2 className="text-xl font-bold text-purple-400">{verseData.reference}</h2>
+              <blockquote className="scripture-text px-4 py-4 bg-slate-700 rounded-lg border-l-4 border-purple-500">
                 "{verseData.text}"
               </blockquote>
-              <p className="text-sm text-gray-700 font-medium">
+              <p className="text-sm text-slate-400 font-medium">
                 Traducción: {translations.find(t => t.code === translation)?.name}
               </p>
             </div>
@@ -134,7 +218,7 @@ const BibleModule = () => {
             <div className="flex flex-wrap justify-center gap-3 pt-4">
               <button
                 onClick={addToFavorites}
-                className="flex items-center px-4 py-2 bg-red-50 text-red-700 rounded-lg border border-red-200 hover:bg-red-100 transition-colors font-medium"
+                className="flex items-center px-4 py-2 bg-red-900/50 text-red-300 rounded-lg border border-red-600 hover:bg-red-900/70 transition-colors font-medium"
               >
                 <Heart className="w-4 h-4 mr-2" />
                 Favorito
@@ -142,7 +226,7 @@ const BibleModule = () => {
               
               <button
                 onClick={() => setShowReflection(true)}
-                className="flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors font-medium"
+                className="flex items-center px-4 py-2 bg-cyan-900/50 text-cyan-300 rounded-lg border border-cyan-600 hover:bg-cyan-900/70 transition-colors font-medium"
               >
                 <MessageCircle className="w-4 h-4 mr-2" />
                 Reflexionar
@@ -153,25 +237,25 @@ const BibleModule = () => {
 
         {/* Modal de reflexión */}
         {showReflection && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl p-6 max-w-md w-full space-y-4">
-              <h3 className="text-lg font-bold text-gray-900">💭 Mi Reflexión</h3>
+          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
+            <div className="bg-slate-800 border border-slate-600 rounded-xl p-6 max-w-md w-full space-y-4">
+              <h3 className="text-lg font-bold text-slate-100">💭 Mi Reflexión</h3>
               <textarea
                 value={reflection}
                 onChange={(e) => setReflection(e.target.value)}
                 placeholder="Escribe tu reflexión sobre este versículo..."
-                className="w-full h-32 p-3 border border-gray-300 rounded-lg text-gray-900 bg-white placeholder-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full h-32 p-3 border border-slate-600 rounded-lg text-slate-100 bg-slate-700 placeholder-slate-400 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
               <div className="flex gap-3">
                 <button
                   onClick={saveReflection}
-                  className="flex-1 py-2 bg-purple-500 text-white rounded-lg font-medium hover:bg-purple-600 transition-colors"
+                  className="flex-1 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-colors"
                 >
                   Guardar
                 </button>
                 <button
                   onClick={() => setShowReflection(false)}
-                  className="flex-1 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+                  className="flex-1 py-2 bg-slate-600 text-slate-200 rounded-lg font-medium hover:bg-slate-700 transition-colors"
                 >
                   Cancelar
                 </button>
@@ -182,30 +266,23 @@ const BibleModule = () => {
 
         {/* Favoritos */}
         {favorites.length > 0 && (
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 space-y-4">
-            <h3 className="text-lg font-bold text-gray-900 flex items-center">
-              <Star className="w-5 h-5 mr-2 text-yellow-500" />
+          <div className="zafirigo-card p-6 space-y-4">
+            <h3 className="text-lg font-bold text-slate-100 flex items-center">
+              <Star className="w-5 h-5 mr-2 text-yellow-400" />
               Mis Favoritos ({favorites.length})
             </h3>
             <div className="space-y-3">
               {favorites.slice(0, 3).map((fav, index) => (
-                <div key={index} className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                  <p className="font-bold text-purple-600 text-sm">{fav.reference}</p>
-                  <p className="text-gray-900 text-sm mt-1 font-medium">"{fav.text.substring(0, 100)}..."</p>
+                <div key={index} className="p-3 bg-slate-700 rounded-lg border border-slate-600">
+                  <p className="font-bold text-purple-400 text-sm">{fav.reference}</p>
+                  <p className="text-slate-200 text-sm mt-1 font-medium">
+                    "{fav.text.substring(0, 100)}..."
+                  </p>
                 </div>
               ))}
             </div>
           </div>
         )}
-
-        {/* Versículo del día */}
-        <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl p-6 text-white">
-          <h3 className="text-lg font-bold mb-3 text-center">✨ Versículo del Día</h3>
-          <blockquote className="text-center italic text-lg mb-2 font-medium">
-            "Todo lo puedo en Cristo que me fortalece"
-          </blockquote>
-          <p className="text-center text-sm opacity-90 font-medium">— Filipenses 4:13</p>
-        </div>
 
       </div>
     </div>
