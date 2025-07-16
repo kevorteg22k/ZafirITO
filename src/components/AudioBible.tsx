@@ -180,6 +180,7 @@ const AudioBible = () => {
 
     // Construct the audio file path
     const audioPath = `/biblia-dramatizada/${book.folder}/${chapter}-${book.name}.mp3`;
+    console.log('Intentando cargar audio desde:', audioPath);
     
     try {
       audio.src = audioPath;
