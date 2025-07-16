@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Header from './Header';
 import LearningPath from './LearningPath';
 import BibleModule from './BibleModule';
+import AudioBible from './AudioBible';
 import UserProfile from './UserProfile';
 import DailyDevotional from './DailyDevotional';
 import QuestsAndBadges from './QuestsAndBadges';
@@ -14,6 +15,8 @@ const MainDashboard = () => {
     switch (activeTab) {
       case 'bible':
         return <BibleModule />;
+      case 'audio-bible':
+        return <AudioBible />;
       case 'profile':
         return <UserProfile />;
       case 'devotional':

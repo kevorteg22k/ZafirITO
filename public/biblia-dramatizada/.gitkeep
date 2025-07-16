@@ -1,0 +1,12 @@
+# Esta carpeta contendrá los archivos de audio de la Biblia Dramatizada
+# Estructura esperada:
+# /biblia-dramatizada/
+#   ├── 01 - Génesis/
+#   │   ├── 1-Génesis.mp3
+#   │   ├── 2-Génesis.mp3
+#   │   └── ...
+#   ├── 02 - Éxodo/
+#   │   ├── 1-Éxodo.mp3
+#   │   ├── 2-Éxodo.mp3
+#   │   └── ...
+#   └── ...

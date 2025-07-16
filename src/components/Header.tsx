@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Book, User, Heart, Trophy, Home, Flame, Zap } from 'lucide-react';
+import { Book, User, Heart, Trophy, Home, Flame, Zap, Volume2 } from 'lucide-react';
 
 interface HeaderProps {
   activeTab: string;
@@ -60,61 +60,73 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
         <div className="flex items-center justify-around py-2">
           <button
             onClick={() => setActiveTab('home')}
-            className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
+            className={`flex flex-col items-center py-2 px-3 rounded-lg transition-colors ${
               activeTab === 'home' 
                 ? 'text-purple-400 bg-purple-900/30' 
                 : 'text-slate-300 hover:text-purple-400'
             }`}
           >
-            <Home className="w-6 h-6 mb-1" />
+            <Home className="w-5 h-5 mb-1" />
             <span className="text-xs font-bold">Inicio</span>
           </button>
           
           <button
             onClick={() => setActiveTab('bible')}
-            className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
+            className={`flex flex-col items-center py-2 px-3 rounded-lg transition-colors ${
               activeTab === 'bible' 
                 ? 'text-purple-400 bg-purple-900/30' 
                 : 'text-slate-300 hover:text-purple-400'
             }`}
           >
-            <Book className="w-6 h-6 mb-1" />
+            <Book className="w-5 h-5 mb-1" />
             <span className="text-xs font-bold">Biblia</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('audio-bible')}
+            className={`flex flex-col items-center py-2 px-3 rounded-lg transition-colors ${
+              activeTab === 'audio-bible' 
+                ? 'text-purple-400 bg-purple-900/30' 
+                : 'text-slate-300 hover:text-purple-400'
+            }`}
+          >
+            <Volume2 className="w-5 h-5 mb-1" />
+            <span className="text-xs font-bold">Audio</span>
           </button>
           
           <button
             onClick={() => setActiveTab('quests')}
-            className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
+            className={`flex flex-col items-center py-2 px-3 rounded-lg transition-colors ${
               activeTab === 'quests' 
                 ? 'text-purple-400 bg-purple-900/30' 
                 : 'text-slate-300 hover:text-purple-400'
             }`}
           >
-            <Trophy className="w-6 h-6 mb-1" />
+            <Trophy className="w-5 h-5 mb-1" />
             <span className="text-xs font-bold">Misiones</span>
           </button>
           
           <button
             onClick={() => setActiveTab('devotional')}
-            className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
+            className={`flex flex-col items-center py-2 px-3 rounded-lg transition-colors ${
               activeTab === 'devotional' 
                 ? 'text-purple-400 bg-purple-900/30' 
                 : 'text-slate-300 hover:text-purple-400'
             }`}
           >
-            <Heart className="w-6 h-6 mb-1" />
+            <Heart className="w-5 h-5 mb-1" />
             <span className="text-xs font-bold">Devocional</span>
           </button>
           
           <button
             onClick={() => setActiveTab('profile')}
-            className={`flex flex-col items-center py-2 px-4 rounded-lg transition-colors ${
+            className={`flex flex-col items-center py-2 px-3 rounded-lg transition-colors ${
               activeTab === 'profile' 
                 ? 'text-purple-400 bg-purple-900/30' 
                 : 'text-slate-300 hover:text-purple-400'
             }`}
           >
-            <User className="w-6 h-6 mb-1" />
+            <User className="w-5 h-5 mb-1" />
             <span className="text-xs font-bold">Perfil</span>
           </button>
         </div>
