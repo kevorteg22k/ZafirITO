@@ -59,9 +59,6 @@ const LearningPath = () => {
     setActiveLevelId(null);
   };
 
-  const handleGameFail = async () => {
-    await loseLife();
-  };
 
   const handleGameExit = () => {
     setActiveGame(null);
@@ -71,13 +68,13 @@ const LearningPath = () => {
   const renderGame = () => {
     switch (activeGame) {
       case 'verso-mix':
-        return <VersoMix onComplete={handleGameComplete} onExit={handleGameExit} onFail={handleGameFail} />;
+        return <VersoMix onComplete={handleGameComplete} onExit={handleGameExit} />;
       case 'emojiverso':  
-        return <Emojiverso onComplete={handleGameComplete} onExit={handleGameExit} onFail={handleGameFail} />;
+        return <Emojiverso onComplete={handleGameComplete} onExit={handleGameExit} />;
       case 'relleno-divino':
-        return <RellenoDivino onComplete={handleGameComplete} onExit={handleGameExit} onFail={handleGameFail} />;
+        return <RellenoDivino onComplete={handleGameComplete} onExit={handleGameExit} />;
       case 'verso-completo':
-        return <VersoCompleto onComplete={handleGameComplete} onExit={handleGameExit} onFail={handleGameFail} />;
+        return <VersoCompleto onComplete={handleGameComplete} onExit={handleGameExit} />;
       default:
         return null;
     }
