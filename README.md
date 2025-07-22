@@ -1,8 +1,8 @@
-# Zafirito - Plataforma de Aprendizaje Bíblico Interactivo
+# MisionGo - Plataforma de Aprendizaje Bíblico Interactivo
 
 ## 📖 Descripción
 
-Zafirito es una plataforma web moderna diseñada para el aprendizaje interactivo de la Biblia a través de juegos, lecturas y audio dramatizado. Desarrollada con React, TypeScript y Tailwind CSS.
+MisionGo es una plataforma web moderna diseñada para el aprendizaje interactivo de la Biblia a través de juegos, lecturas y audio dramatizado. Desarrollada con React, TypeScript y Tailwind CSS.
 
 ## 🚀 Características Principales
 
