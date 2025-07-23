@@ -1,60 +1,58 @@
-
 import React, { useState, useEffect } from 'react';
-import { Check, X, RotateCcw, Heart } from 'lucide-react';
+import { ArrowLeft, Heart, Star, Clock } from 'lucide-react';
 
 interface VersoCompletoProps {
   onComplete: (xp: number) => void;
   onExit: () => void;
+  onLoseLife: () => void;
+  currentLives: number;
 }
 
 const questions = [
   {
-    verse: "En el principio creó Dios los cielos y la tierra",
-    reference: "Génesis 1:1",
-    options: [
-      "En el principio era el Verbo",
-      "En el principio creó Dios los cielos y la tierra",
-      "En el principio creó el hombre",
-      "En el principio había tinieblas"
-    ],
-    correct: 1,
-    explanation: "Este es el primer versículo de la Biblia"
-  },
-  {
-    verse: "Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito",
+    verse: "Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito...",
     reference: "Juan 3:16",
     options: [
-      "Porque Dios es amor y verdad",
-      "Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito",
-      "Porque Dios quiere que todos se salven",
-      "Porque el amor de Dios es eterno"
+      "para que todo aquel que en él cree, no se pierda, mas tenga vida eterna",
+      "para que el mundo sea salvo por él",
+      "para que todo aquel que le busque, sea encontrado",
+      "para que su nombre sea glorificado en toda la tierra"
     ],
-    correct: 1,
-    explanation: "El versículo más famoso sobre el amor de Dios"
+    correctAnswer: 0,
+    explanation: "Este es uno de los versículos más conocidos que habla del amor de Dios"
   },
   {
-    verse: "Todo lo puedo en Cristo que me fortalece",
+    verse: "Todo lo puedo en Cristo...",
     reference: "Filipenses 4:13",
     options: [
-      "Todo lo puedo en Cristo que me fortalece",
-      "Todo lo puedo con la ayuda de Dios",
-      "Todo lo puedo con fe y esperanza",
-      "Todo lo puedo si confío en el Señor"
+      "que me da sabiduría",
+      "que me fortalece",
+      "que me ama",
+      "que me guía"
     ],
-    correct: 0,
-    explanation: "Versículo sobre la fortaleza que viene de Cristo"
+    correctAnswer: 1,
+    explanation: "Cristo nos da fortaleza para enfrentar cualquier situación"
+  },
+  {
+    verse: "El Señor es mi pastor...",
+    reference: "Salmos 23:1",
+    options: [
+      "me protegerá",
+      "me cuidará",
+      "nada me faltará",
+      "me consolará"
+    ],
+    correctAnswer: 2,
+    explanation: "Cuando Dios es nuestro pastor, Él suple todas nuestras necesidades"
   }
 ];
 
-const VersoCompleto: React.FC<VersoCompletoProps> = ({ onComplete, onExit }) => {
+const VersoCompleto: React.FC<VersoCompletoProps> = ({ onComplete, onExit, onLoseLife, currentLives }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
-  const [hearts, setHearts] = useState(5);
-  const [timeLeft, setTimeLeft] = useState(30);
-
-  const question = questions[currentQuestion];
+  const [timeLeft, setTimeLeft] = useState(30); // 30 segundos por pregunta
 
   useEffect(() => {
     if (timeLeft > 0 && !showResult) {
@@ -66,155 +64,177 @@ const VersoCompleto: React.FC<VersoCompletoProps> = ({ onComplete, onExit }) => 
   }, [timeLeft, showResult]);
 
   const handleTimeUp = () => {
-    setHearts(hearts - 1);
     setShowResult(true);
-    setSelectedOption(-1); // Indica que se acabó el tiempo
+    onLoseLife();
+    setTimeout(() => {
+      if (currentLives > 1) {
+        resetQuestion();
+      } else {
+        // Game over
+        onExit();
+      }
+    }, 2000);
   };
 
   const handleOptionSelect = (optionIndex: number) => {
-    if (showResult) return;
     setSelectedOption(optionIndex);
   };
 
   const checkAnswer = () => {
     if (selectedOption === null) return;
 
+    const isCorrect = selectedOption === questions[currentQuestion].correctAnswer;
     setShowResult(true);
-    
-    if (selectedOption === question.correct) {
+
+    if (isCorrect) {
       setScore(score + 1);
+      setTimeout(() => {
+        if (currentQuestion + 1 < questions.length) {
+          resetQuestion();
+          setCurrentQuestion(currentQuestion + 1);
+        } else {
+          // Juego completado
+          const finalScore = score + 1;
+          const xpEarned = finalScore * 12; // 12 XP por respuesta correcta
+          onComplete(xpEarned);
+        }
+      }, 2000);
     } else {
-      setHearts(hearts - 1);
+      // Perder vida
+      onLoseLife();
+      setTimeout(() => {
+        if (currentLives > 1) {
+          resetQuestion();
+        } else {
+          // Game over
+          onExit();
+        }
+      }, 2000);
     }
-
-    setTimeout(() => {
-      if (hearts <= 1 && selectedOption !== question.correct) {
-        // Game Over
-        onComplete(score * 10);
-        return;
-      }
-
-      if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(currentQuestion + 1);
-        setSelectedOption(null);
-        setShowResult(false);
-        setTimeLeft(30);
-      } else {
-        onComplete(score * 15 + 25);
-      }
-    }, 2500);
   };
 
+  const resetQuestion = () => {
+    setSelectedOption(null);
+    setShowResult(false);
+    setTimeLeft(30);
+  };
+
+  const question = questions[currentQuestion];
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-500 to-blue-600 p-4">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="min-h-screen bg-background p-4">
+      <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <button 
+        <div className="flex items-center justify-between mb-6">
+          <button
             onClick={onExit}
-            className="text-white hover:text-gray-200 flex items-center space-x-2 font-bold"
+            className="flex items-center text-foreground hover:text-primary transition-colors"
           >
-            <X className="w-6 h-6" />
+            <ArrowLeft className="w-6 h-6 mr-2" />
+            Salir
           </button>
           
           <div className="flex items-center space-x-4">
-            {/* Corazones */}
-            <div className="flex items-center space-x-1">
-              {[...Array(5)].map((_, i) => (
-                <Heart 
-                  key={i} 
-                  className={`w-6 h-6 ${i < hearts ? 'text-red-500 fill-red-500' : 'text-gray-400'}`} 
-                />
-              ))}
+            <div className="flex items-center text-red-500">
+              <Heart className="w-5 h-5 mr-1" />
+              <span className="font-bold">{currentLives}</span>
             </div>
-            
-            {/* Timer */}
-            <div className="bg-white/20 rounded-full px-3 py-1">
-              <span className="text-white font-bold">{timeLeft}s</span>
+            <div className="flex items-center text-primary">
+              <Star className="w-5 h-5 mr-1" />
+              <span className="font-bold">{score}</span>
+            </div>
+            <div className={`flex items-center ${timeLeft <= 10 ? 'text-red-500' : 'text-secondary'}`}>
+              <Clock className="w-5 h-5 mr-1" />
+              <span className="font-bold">{timeLeft}s</span>
             </div>
           </div>
         </div>
 
         {/* Progress */}
-        <div className="w-full bg-white/20 rounded-full h-3">
-          <div 
-            className="h-full bg-green-400 rounded-full transition-all duration-300"
-            style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
-          ></div>
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-muted-foreground">
+              Pregunta {currentQuestion + 1} de {questions.length}
+            </span>
+          </div>
+          <div className="w-full bg-muted rounded-full h-2">
+            <div 
+              className="bg-primary h-2 rounded-full transition-all duration-300"
+              style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+            />
+          </div>
         </div>
 
         {/* Question */}
-        <div className="bg-white rounded-2xl p-6 shadow-xl">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">
-            ¿Cuál es el versículo correcto?
-          </h2>
-          <p className="text-lg text-gray-800 text-center mb-2 font-semibold">
-            {question.reference}
+        <div className="mision-card p-6 mb-6">
+          <h2 className="text-xl font-bold text-center mb-2">Verso Completo</h2>
+          <p className="text-center text-muted-foreground mb-6">
+            Selecciona cómo continúa el versículo
           </p>
-        </div>
-
-        {/* Options */}
-        <div className="space-y-3">
-          {question.options.map((option, index) => (
-            <button
-              key={index}
-              onClick={() => handleOptionSelect(index)}
-              className={`w-full p-4 rounded-xl text-left transition-all duration-200 font-semibold ${
-                selectedOption === index
-                  ? showResult
-                    ? index === question.correct
-                      ? 'bg-green-500 text-white border-2 border-green-400'
-                      : 'bg-red-500 text-white border-2 border-red-400'
-                    : 'bg-blue-500 text-white border-2 border-blue-400'
-                  : showResult && index === question.correct
-                    ? 'bg-green-500 text-white border-2 border-green-400'
-                    : 'bg-white text-gray-900 border-2 border-gray-200 hover:border-blue-300'
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-base">{option}</span>
-                {showResult && index === question.correct && (
-                  <Check className="w-6 h-6 text-white" />
-                )}
-                {showResult && selectedOption === index && index !== question.correct && (
-                  <X className="w-6 h-6 text-white" />
-                )}
-              </div>
-            </button>
-          ))}
-        </div>
-
-        {/* Confirm Button */}
-        {selectedOption !== null && !showResult && (
-          <button
-            onClick={checkAnswer}
-            className="w-full bg-green-500 text-white font-bold py-4 rounded-xl hover:bg-green-600 transition-colors duration-200"
-          >
-            Confirmar
-          </button>
-        )}
-
-        {/* Result */}
-        {showResult && (
-          <div className="bg-white rounded-2xl p-6 text-center">
-            <div className="text-6xl mb-4">
-              {selectedOption === question.correct ? '🎉' : selectedOption === -1 ? '⏰' : '😔'}
-            </div>
-            <h3 className={`text-2xl font-bold mb-2 ${
-              selectedOption === question.correct ? 'text-green-600' : 'text-red-600'
-            }`}>
-              {selectedOption === question.correct ? '¡Correcto!' : selectedOption === -1 ? '¡Tiempo agotado!' : '¡Incorrecto!'}
-            </h3>
-            <p className="text-gray-800 mb-4 font-medium">
-              {question.explanation}
-            </p>
-            {selectedOption === question.correct && (
-              <p className="text-green-600 font-bold">
-                +15 XP ganados
-              </p>
-            )}
+          
+          <div className="text-center mb-6">
+            <p className="scripture-text mb-2">{question.verse}</p>
+            <p className="text-sm text-muted-foreground">{question.reference}</p>
           </div>
-        )}
+
+          {/* Options */}
+          <div className="space-y-3 mb-6">
+            {question.options.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => handleOptionSelect(index)}
+                className={`
+                  w-full p-4 text-left rounded-lg border-2 transition-all duration-200
+                  ${selectedOption === index 
+                    ? 'border-primary bg-primary/10' 
+                    : 'border-border hover:border-primary/50'
+                  }
+                  ${showResult && index === question.correctAnswer 
+                    ? 'border-green-500 bg-green-500/10' 
+                    : ''
+                  }
+                  ${showResult && selectedOption === index && index !== question.correctAnswer 
+                    ? 'border-red-500 bg-red-500/10' 
+                    : ''
+                  }
+                `}
+                disabled={showResult}
+              >
+                <span className="block font-medium">{option}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Action Button */}
+          {!showResult ? (
+            <button
+              onClick={checkAnswer}
+              disabled={selectedOption === null}
+              className="w-full mision-button disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Confirmar respuesta
+            </button>
+          ) : (
+            <div className="text-center">
+              {selectedOption === question.correctAnswer ? (
+                <div className="text-green-600">
+                  <p className="font-bold text-lg">¡Excelente! 🎉</p>
+                  <p className="text-sm">{question.explanation}</p>
+                </div>
+              ) : timeLeft === 0 ? (
+                <div className="text-red-600">
+                  <p className="font-bold text-lg">Se acabó el tiempo ⏰</p>
+                  <p className="text-sm">{question.explanation}</p>
+                </div>
+              ) : (
+                <div className="text-red-600">
+                  <p className="font-bold text-lg">Incorrecto 😔</p>
+                  <p className="text-sm">{question.explanation}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

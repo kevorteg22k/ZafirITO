@@ -1,217 +1,230 @@
-
 import React, { useState, useEffect } from 'react';
-import { Shuffle, Check, RotateCcw, X } from 'lucide-react';
+import { ArrowLeft, Heart, Star, RotateCcw } from 'lucide-react';
 
 interface VersoMixProps {
   onComplete: (xp: number) => void;
   onExit: () => void;
+  onLoseLife: () => void;
+  currentLives: number;
 }
 
 const verses = [
+  {
+    text: "El Señor es mi pastor nada me faltará",
+    reference: "Salmos 23:1",
+    words: ["El", "Señor", "es", "mi", "pastor", "nada", "me", "faltará"]
+  },
   {
     text: "Todo lo puedo en Cristo que me fortalece",
     reference: "Filipenses 4:13",
     words: ["Todo", "lo", "puedo", "en", "Cristo", "que", "me", "fortalece"]
   },
   {
-    text: "Jehová es mi pastor; nada me faltará",
-    reference: "Salmos 23:1", 
-    words: ["Jehová", "es", "mi", "pastor;", "nada", "me", "faltará"]
-  },
-  {
-    text: "Encomienda a Jehová tu camino, y confía en él",
-    reference: "Salmos 37:5",
-    words: ["Encomienda", "a", "Jehová", "tu", "camino,", "y", "confía", "en", "él"]
+    text: "Porque de tal manera amó Dios al mundo",
+    reference: "Juan 3:16",
+    words: ["Porque", "de", "tal", "manera", "amó", "Dios", "al", "mundo"]
   }
 ];
 
-const VersoMix: React.FC<VersoMixProps> = ({ onComplete, onExit }) => {
+const VersoMix: React.FC<VersoMixProps> = ({ onComplete, onExit, onLoseLife, currentLives }) => {
   const [currentVerse, setCurrentVerse] = useState(0);
   const [shuffledWords, setShuffledWords] = useState<string[]>([]);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
-  const [isCorrect, setIsCorrect] = useState(false);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showResult, setShowResult] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
-  const [notificationType, setNotificationType] = useState<'success' | 'error'>('success');
-
-  const verse = verses[currentVerse];
+  const [score, setScore] = useState(0);
 
   useEffect(() => {
     shuffleWords();
   }, [currentVerse]);
 
   const shuffleWords = () => {
-    const shuffled = [...verse.words].sort(() => Math.random() - 0.5);
-    setShuffledWords(shuffled);
-    setSelectedWords([]);
-    setIsCorrect(false);
-    setShowResult(false);
+    const words = [...verses[currentVerse].words];
+    // Fisher-Yates shuffle
+    for (let i = words.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [words[i], words[j]] = [words[j], words[i]];
+    }
+    setShuffledWords(words);
   };
 
   const handleWordClick = (word: string, index: number) => {
     setSelectedWords([...selectedWords, word]);
-    setShuffledWords(shuffledWords.filter((_, i) => i !== index));
+    const newShuffledWords = shuffledWords.filter((_, i) => i !== index);
+    setShuffledWords(newShuffledWords);
   };
 
   const handleSelectedWordClick = (index: number) => {
     const word = selectedWords[index];
     setShuffledWords([...shuffledWords, word]);
-    setSelectedWords(selectedWords.filter((_, i) => i !== index));
-  };
-
-  const showDynamicNotification = (type: 'success' | 'error') => {
-    setNotificationType(type);
-    setShowNotification(true);
-    setTimeout(() => setShowNotification(false), 3000);
+    const newSelectedWords = selectedWords.filter((_, i) => i !== index);
+    setSelectedWords(newSelectedWords);
   };
 
   const checkAnswer = () => {
-    const isMatch = selectedWords.join(' ') === verse.text;
-    setIsCorrect(isMatch);
-    setShowResult(true);
+    const userText = selectedWords.join(" ");
+    const correctText = verses[currentVerse].text;
+    const correct = userText === correctText;
     
-    if (isMatch) {
-      showDynamicNotification('success');
+    setIsCorrect(correct);
+    setShowResult(true);
+
+    if (correct) {
+      setScore(score + 1);
       setTimeout(() => {
-        if (currentVerse < verses.length - 1) {
+        if (currentVerse + 1 < verses.length) {
+          resetVerse();
           setCurrentVerse(currentVerse + 1);
         } else {
-          onComplete(15);
+          // Juego completado
+          const finalScore = score + 1;
+          const xpEarned = finalScore * 10; // 10 XP por versículo completado
+          onComplete(xpEarned);
         }
       }, 2000);
     } else {
-      showDynamicNotification('error');
+      // Perder vida
+      onLoseLife();
+      setTimeout(() => {
+        if (currentLives > 1) {
+          resetVerse();
+        } else {
+          // Game over
+          onExit();
+        }
+      }, 2000);
     }
   };
 
   const resetVerse = () => {
+    setSelectedWords([]);
+    setShowResult(false);
+    setIsCorrect(null);
     shuffleWords();
   };
 
+  const verse = verses[currentVerse];
+
   return (
-    <div className="min-h-screen bg-slate-900 p-4">
-      {/* Dynamic Island Notification */}
-      {showNotification && (
-        <div className={`dynamic-island ${notificationType}`}>
-          <div className="flex items-center space-x-2">
-            {notificationType === 'success' ? (
-              <>
-                <Check className="w-5 h-5 text-white" />
-                <span className="text-white font-bold">¡Correcto! +10 XP</span>
-              </>
-            ) : (
-              <>
-                <X className="w-5 h-5 text-white" />
-                <span className="text-white font-bold">¡Inténtalo de nuevo!</span>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="min-h-screen bg-background p-4">
+      <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <button 
+        <div className="flex items-center justify-between mb-6">
+          <button
             onClick={onExit}
-            className="text-slate-200 hover:text-white font-bold flex items-center space-x-2"
+            className="flex items-center text-foreground hover:text-primary transition-colors"
           >
-            <X className="w-6 h-6" />
-            <span>Salir</span>
+            <ArrowLeft className="w-6 h-6 mr-2" />
+            Salir
           </button>
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-purple-400">📖 Verso Mix</h1>
-            <p className="text-sm text-slate-300 font-medium">
-              Verso {currentVerse + 1} de {verses.length}
-            </p>
-          </div>
-          <div className="w-16"></div>
-        </div>
-
-        {/* Instructions */}
-        <div className="zafirigo-card p-6 text-center">
-          <h2 className="text-lg font-semibold mb-2 text-slate-100">Ordena las palabras correctamente</h2>
-          <p className="text-sm text-slate-300 font-medium">
-            {verse.reference}
-          </p>
-        </div>
-
-        {/* Selected words area */}
-        <div className="zafirigo-card p-6 min-h-[120px]">
-          <h3 className="text-sm font-medium text-purple-400 mb-4">Tu respuesta:</h3>
-          <div className="flex flex-wrap gap-2 mb-4 min-h-[60px]">
-            {selectedWords.map((word, index) => (
-              <button
-                key={`selected-${index}`}
-                onClick={() => handleSelectedWordClick(index)}
-                className="px-3 py-2 bg-purple-600 text-white rounded-lg text-sm font-bold hover:bg-purple-700 transition-colors border border-purple-500"
-              >
-                {word}
-              </button>
-            ))}
-          </div>
           
-          {selectedWords.length > 0 && (
-            <div className="flex gap-2">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center text-red-500">
+              <Heart className="w-5 h-5 mr-1" />
+              <span className="font-bold">{currentLives}</span>
+            </div>
+            <div className="flex items-center text-primary">
+              <Star className="w-5 h-5 mr-1" />
+              <span className="font-bold">{score}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress */}
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-muted-foreground">
+              Versículo {currentVerse + 1} de {verses.length}
+            </span>
+          </div>
+          <div className="w-full bg-muted rounded-full h-2">
+            <div 
+              className="bg-primary h-2 rounded-full transition-all duration-300"
+              style={{ width: `${((currentVerse + 1) / verses.length) * 100}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Game */}
+        <div className="mision-card p-6 mb-6">
+          <h2 className="text-xl font-bold text-center mb-2">Verso Mix</h2>
+          <p className="text-center text-muted-foreground mb-6">
+            Ordena las palabras para formar el versículo
+          </p>
+          
+          <div className="text-center mb-6">
+            <p className="text-sm text-muted-foreground">{verse.reference}</p>
+          </div>
+
+          {/* Selected Words Area */}
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold mb-2">Tu versículo:</h3>
+            <div className="min-h-20 p-4 border-2 border-dashed border-border rounded-lg bg-muted/30">
+              <div className="flex flex-wrap gap-2">
+                {selectedWords.map((word, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleSelectedWordClick(index)}
+                    className="px-3 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                    disabled={showResult}
+                  >
+                    {word}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Available Words */}
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold mb-2">Palabras disponibles:</h3>
+            <div className="flex flex-wrap gap-2">
+              {shuffledWords.map((word, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleWordClick(word, index)}
+                  className="px-3 py-2 bg-card border border-border rounded-lg hover:bg-muted transition-colors"
+                  disabled={showResult}
+                >
+                  {word}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          {!showResult ? (
+            <div className="flex space-x-3">
               <button
                 onClick={checkAnswer}
-                className="zafirigo-button flex items-center gap-2"
+                disabled={selectedWords.length !== verse.words.length}
+                className="flex-1 mision-button disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Check className="w-4 h-4" />
                 Verificar
               </button>
               <button
                 onClick={resetVerse}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-700 border-2 border-slate-600 text-slate-200 rounded-lg font-bold hover:bg-slate-600 transition-colors"
+                className="px-4 py-3 bg-secondary text-secondary-foreground rounded-xl hover:bg-secondary/90 transition-colors"
               >
-                <RotateCcw className="w-4 h-4" />
-                Reiniciar
+                <RotateCcw className="w-5 h-5" />
               </button>
+            </div>
+          ) : (
+            <div className="text-center">
+              {isCorrect ? (
+                <div className="text-green-600">
+                  <p className="font-bold text-lg">¡Perfecto! 🎉</p>
+                  <p className="text-sm">Has ordenado correctamente el versículo</p>
+                </div>
+              ) : (
+                <div className="text-red-600">
+                  <p className="font-bold text-lg">Incorrecto 😔</p>
+                  <p className="text-sm">El orden correcto era: "{verse.text}"</p>
+                </div>
+              )}
             </div>
           )}
         </div>
-
-        {/* Available words */}
-        <div className="zafirigo-card p-6">
-          <h3 className="text-sm font-medium text-purple-400 mb-4">Palabras disponibles:</h3>
-          <div className="flex flex-wrap gap-2">
-            {shuffledWords.map((word, index) => (
-              <button
-                key={`shuffled-${index}`}
-                onClick={() => handleWordClick(word, index)}
-                className="game-button"
-              >
-                {word}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Result */}
-        {showResult && (
-          <div className={`zafirigo-card p-6 text-center border-2 ${
-            isCorrect ? 'border-green-500 bg-green-900/20' : 'border-red-500 bg-red-900/20'
-          }`}>
-            <div className="text-4xl mb-2">
-              {isCorrect ? '🎉' : '😔'}
-            </div>
-            <h3 className={`text-lg font-bold mb-2 ${
-              isCorrect ? 'text-green-400' : 'text-red-400'
-            }`}>
-              {isCorrect ? '¡Correcto!' : '¡Inténtalo de nuevo!'}
-            </h3>
-            {isCorrect && (
-              <>
-                <p className="text-sm text-slate-200 mb-2 font-medium">
-                  "{verse.text}"
-                </p>
-                <p className="text-xs font-bold text-purple-400">
-                  +10 XP ganados
-                </p>
-              </>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

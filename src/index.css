@@ -80,7 +80,7 @@
   }
 
   body {
-    @apply bg-slate-900 text-slate-100;
+    @apply bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -89,48 +89,48 @@
   }
 
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 }
 
 @layer components {
-  /* Componentes mejorados para ZafiriGo */
-  .zafirigo-gradient {
-    background: linear-gradient(135deg, #7C3AED 0%, #22D3EE 50%, #FACC15 100%);
+  /* Componentes MisionGo con colores oficiales */
+  .mision-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
   }
 
   .spiritual-gradient {
-    background: linear-gradient(135deg, #7C3AED 0%, #22D3EE 100%);
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--secondary)) 100%);
   }
 
   .divine-glow {
-    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3), 0 0 40px rgba(124, 58, 237, 0.1);
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3), 0 0 40px hsl(var(--primary) / 0.1);
   }
 
   /* Textos mejorados para contraste */
   .scripture-text {
-    @apply text-lg leading-relaxed font-semibold text-slate-100;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    @apply text-lg leading-relaxed font-semibold text-foreground;
+    text-shadow: 0 1px 2px hsl(var(--accent) / 0.3);
   }
 
   .high-contrast-text {
-    @apply text-slate-100 font-semibold;
+    @apply text-foreground font-semibold;
   }
 
   .readable-text {
-    @apply text-base leading-relaxed text-slate-200 font-medium;
+    @apply text-base leading-relaxed text-foreground/80 font-medium;
   }
 
-  /* Botones estilo ZafiriGo */
-  .zafirigo-button {
-    @apply bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-700 hover:to-cyan-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95;
+  /* Botones estilo MisionGo */
+  .mision-button {
+    @apply bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95;
     font-size: 16px;
     min-height: 44px;
   }
 
   /* Tarjetas mejoradas */
-  .zafirigo-card {
-    @apply bg-slate-800 border border-slate-700 rounded-xl shadow-lg hover:border-purple-500 transition-all duration-300;
+  .mision-card {
+    @apply bg-card border border-border rounded-xl shadow-lg hover:border-primary transition-all duration-300;
     min-height: 120px;
   }
 
@@ -140,19 +140,19 @@
   }
 
   .level-locked {
-    @apply bg-slate-700 border-slate-600 opacity-70 text-slate-400;
+    @apply bg-muted border-border opacity-70 text-muted-foreground;
   }
 
   .level-available {
-    @apply bg-purple-600 border-purple-500 shadow-purple-500/30 hover:scale-110 active:scale-95 text-white;
+    @apply bg-primary border-primary shadow-primary/30 hover:scale-110 active:scale-95 text-primary-foreground;
   }
 
   .level-bonus {
-    @apply bg-cyan-500 border-cyan-400 shadow-cyan-500/30 text-slate-900;
+    @apply bg-secondary border-secondary shadow-secondary/30 text-secondary-foreground;
   }
 
   .level-checkpoint {
-    @apply bg-yellow-500 border-yellow-400 shadow-yellow-500/30 text-slate-900;
+    @apply bg-accent border-accent shadow-accent/30 text-accent-foreground;
   }
 
   /* Animaciones mejoradas */
