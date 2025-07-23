@@ -13,7 +13,7 @@ const WelcomeAnimation = () => {
         
         <div className="space-y-4">
           <h1 className="text-5xl font-bold text-white mb-4">
-            Duolingo Bíblico
+            MisionGo
           </h1>
           <p className="text-xl text-white/90 max-w-md mx-auto">
             "Lámpara es a mis pies tu palabra, y lumbrera a mi camino"

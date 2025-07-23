@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Eye, EyeOff, Mail, Lock, User, Crown, Play } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import logoMisionJuvenil from '../assets/logo-mision-juvenil.png';
 
 const AuthPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -58,7 +59,7 @@ const AuthPage = () => {
           });
         } else {
           toast({
-            title: "¡Bienvenido a ZafiriGo!",
+            title: "¡Bienvenido a MisionGo!",
             description: "Has iniciado sesión correctamente",
           });
         }
@@ -108,7 +109,7 @@ const AuthPage = () => {
     signInAsGuest();
     toast({
       title: "Modo Invitado Activado",
-      description: "Puedes explorar ZafiriGo sin registrarte",
+      description: "Puedes explorar MisionGo sin registrarte",
     });
   };
 
@@ -132,7 +133,7 @@ const AuthPage = () => {
                 placeholder="Correo electrónico"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500"
+                className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary"
                 required
               />
             </div>
@@ -140,7 +141,7 @@ const AuthPage = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? 'Enviando...' : 'Enviar enlace'}
             </button>
@@ -162,10 +163,14 @@ const AuthPage = () => {
     <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-block p-4 bg-purple-500/20 rounded-full mb-4">
-            <Crown className="w-12 h-12 text-yellow-400" />
-          </div>
-          <h1 className="text-3xl font-bold text-white mb-2">ZafiriGo</h1>
+            <div className="inline-block p-4 rounded-full mb-4 overflow-hidden bg-white">
+              <img 
+                src={logoMisionJuvenil} 
+                alt="Misión Juvenil D5" 
+                className="w-12 h-12 object-contain"
+              />
+            </div>
+          <h1 className="text-3xl font-bold text-white mb-2">MisionGo</h1>
           <p className="text-gray-400">Juega. Aprende. Camina con Dios.</p>
         </div>
 
@@ -178,7 +183,7 @@ const AuthPage = () => {
                 placeholder="Nombre completo"
                 value={formData.fullName}
                 onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500"
+              className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary"
                 required
               />
             </div>
@@ -191,7 +196,7 @@ const AuthPage = () => {
               placeholder="Correo electrónico"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500"
+              className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary"
               required
             />
           </div>
@@ -203,7 +208,7 @@ const AuthPage = () => {
               placeholder="Contraseña"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full pl-10 pr-12 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500"
+              className="w-full pl-10 pr-12 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary"
               required
             />
             <button
@@ -223,7 +228,7 @@ const AuthPage = () => {
                 placeholder="Confirmar contraseña"
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500"
+                className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary"
                 required
               />
             </div>
@@ -232,7 +237,7 @@ const AuthPage = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? 'Procesando...' : (isSignUp ? 'Crear Cuenta' : 'Iniciar Sesión')}
           </button>
@@ -242,7 +247,7 @@ const AuthPage = () => {
           <div className="text-center">
             <button
               onClick={() => setIsSignUp(!isSignUp)}
-              className="text-purple-400 hover:text-purple-300 transition-colors"
+              className="text-primary hover:text-primary/80 transition-colors"
             >
               {isSignUp ? '¿Ya tienes cuenta? Inicia sesión' : '¿No tienes cuenta? Regístrate'}
             </button>

@@ -5,65 +5,72 @@
 
 @layer base {
   :root {
-    --background: 15 23 42; /* #0F172A */
-    --foreground: 248 250 252; /* #F8FAFC */
+    /* Misión Juvenil D5 - Modo claro con base blanca */
+    --background: 0 0% 100%; /* Blanco puro */
+    --foreground: 222.2 84% 4.9%; /* Texto oscuro */
 
-    --card: 30 41 59; /* #1E293B */
-    --card-foreground: 248 250 252; /* #F8FAFC */
+    --card: 0 0% 100%; /* Blanco */
+    --card-foreground: 222.2 84% 4.9%;
 
-    --popover: 30 41 59; /* #1E293B */
-    --popover-foreground: 248 250 252; /* #F8FAFC */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 124 58 237; /* #7C3AED */
-    --primary-foreground: 255 255 255;
+    /* Naranja principal - Acción, fuego, avance (#F58634) */
+    --primary: 25 93% 59%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 51 65 85; /* #334155 */
-    --secondary-foreground: 248 250 252; /* #F8FAFC */
+    /* Azul secundario - Confianza, verdad (#449BD1) */
+    --secondary: 200 56% 55%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 51 65 85; /* #334155 */
-    --muted-foreground: 148 163 184; /* #94A3B8 */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 34 211 238; /* #22D3EE */
-    --accent-foreground: 15 23 42; /* #0F172A */
+    /* Violeta oscuro - Profundidad espiritual (#473458) */
+    --accent: 259 25% 31%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 239 68 68;
-    --destructive-foreground: 255 255 255;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 51 65 85; /* #334155 */
-    --input: 51 65 85; /* #334155 */
-    --ring: 124 58 237; /* #7C3AED */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 25 93% 59%; /* Naranja para focus */
 
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 15 23 42; /* #0F172A */
-    --foreground: 248 250 252; /* #F8FAFC */
+    /* Modo oscuro con violeta profundo como base */
+    --background: 259 25% 31%; /* Violeta oscuro #473458 */
+    --foreground: 0 0% 100%;
 
-    --card: 30 41 59; /* #1E293B */
-    --card-foreground: 248 250 252; /* #F8FAFC */
+    --card: 259 25% 35%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 30 41 59; /* #1E293B */
-    --popover-foreground: 248 250 252; /* #F8FAFC */
+    --popover: 259 25% 31%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 124 58 237; /* #7C3AED */
-    --primary-foreground: 255 255 255;
+    /* Naranja principal mantiene luminosidad */
+    --primary: 25 93% 59%; /* #F58634 */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 51 65 85; /* #334155 */
-    --secondary-foreground: 248 250 252; /* #F8FAFC */
+    /* Azul más brillante en modo oscuro */
+    --secondary: 200 56% 65%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 51 65 85; /* #334155 */
-    --muted-foreground: 148 163 184; /* #94A3B8 */
+    --muted: 259 25% 40%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 34 211 238; /* #22D3EE */
-    --accent-foreground: 15 23 42; /* #0F172A */
+    --accent: 25 93% 59%; /* Naranja como accent en oscuro */
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 239 68 68;
-    --destructive-foreground: 255 255 255;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 51 65 85; /* #334155 */
-    --input: 51 65 85; /* #334155 */
-    --ring: 124 58 237; /* #7C3AED */
+    --border: 259 25% 40%;
+    --input: 259 25% 40%;
+    --ring: 25 93% 59%;
   }
 }
 
