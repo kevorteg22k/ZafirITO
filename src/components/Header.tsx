@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { Book, User, Heart, Trophy, Home, Flame, Zap, Volume2 } from 'lucide-react';
+import { Book, User, Heart, Trophy, Home, Flame, Gem, Volume2 } from 'lucide-react';
 import logoMisionJuvenil from '../assets/logo-mision-juvenil.png';
+import { useGameProgress } from '@/hooks/useGameProgress';
 
 interface HeaderProps {
   activeTab: string;
@@ -9,11 +10,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
-  const userStats = {
-    streak: 0,
-    gems: 0,
-    hearts: 3
-  };
+  const { progress } = useGameProgress();
 
   return (
     <>
@@ -39,21 +36,19 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
               {/* Streak */}
               <div className="flex items-center space-x-1">
                 <Flame className="w-5 h-5 text-primary" />
-                <span className="text-white font-bold text-sm">{userStats.streak}</span>
+                <span className="text-white font-bold text-sm">{progress.currentStreak}</span>
               </div>
               
-              {/* Gems */}
+              {/* XP/Gems */}
               <div className="flex items-center space-x-1">
-                <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">💎</span>
-                </div>
-                <span className="text-white font-bold text-sm">{userStats.gems}</span>
+                <Gem className="w-5 h-5 text-secondary" />
+                <span className="text-white font-bold text-sm">{progress.totalXP}</span>
               </div>
               
               {/* Hearts */}
               <div className="flex items-center space-x-1">
                 <Heart className="w-5 h-5 text-red-500 fill-red-500" />
-                <span className="text-white font-bold text-sm">{userStats.hearts}</span>
+                <span className="text-white font-bold text-sm">{progress.currentLives}</span>
               </div>
             </div>
           </div>

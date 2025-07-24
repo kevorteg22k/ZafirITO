@@ -1,41 +1,45 @@
 
 import React, { useState } from 'react';
-import { Trophy, Target, Zap, Star, Clock, CheckCircle } from 'lucide-react';
+import { Trophy, Target, Zap, Star, Clock, CheckCircle, Crown, Lightbulb, Fish, Sword, Gem } from 'lucide-react';
+import { useGameProgress } from '@/hooks/useGameProgress';
 
 const QuestsAndBadges = () => {
   const [activeTab, setActiveTab] = useState<'quests' | 'badges'>('quests');
+  const { progress } = useGameProgress();
 
   const dailyQuests = [
     {
       id: 1,
       title: 'Gana 30 XP',
       description: 'Completa lecciones para ganar experiencia',
-      progress: 15,
+      progress: progress.totalXP,
       target: 30,
       reward: 50,
       icon: <Zap className="w-6 h-6 text-yellow-500" />,
-      timeLeft: '6 horas'
+      timeLeft: '6 horas',
+      completed: progress.totalXP >= 30
     },
     {
       id: 2,
       title: 'Completa 2 lecciones perfectas',
       description: 'Termina lecciones sin errores',
-      progress: 0,
+      progress: progress.completedLevels.length,
       target: 2,
       reward: 100,
       icon: <Target className="w-6 h-6 text-green-500" />,
-      timeLeft: '6 horas'
+      timeLeft: '6 horas',
+      completed: progress.completedLevels.length >= 2
     },
     {
       id: 3,
       title: 'Mantén tu racha',
       description: 'No rompas tu racha diaria',
-      progress: 1,
+      progress: progress.currentStreak >= 1 ? 1 : 0,
       target: 1,
       reward: 25,
       icon: <CheckCircle className="w-6 h-6 text-blue-500" />,
       timeLeft: '6 horas',
-      completed: true
+      completed: progress.currentStreak >= 1
     }
   ];
 
@@ -43,56 +47,56 @@ const QuestsAndBadges = () => {
     {
       id: 1,
       name: 'León de Judá',
-      description: 'Completa 10 lecciones',
-      icon: '🦁',
-      earned: true,
-      progress: 10,
-      total: 10
+      description: 'Alcanza 200 XP total',
+      icon: Trophy,
+      earned: progress.totalXP >= 200,
+      progress: progress.totalXP,
+      total: 200
     },
     {
       id: 2,
       name: 'Embajador del Reino',
       description: 'Mantén una racha de 7 días',
-      icon: '👑',
-      earned: true,
-      progress: 7,
+      icon: Crown,
+      earned: progress.currentStreak >= 7,
+      progress: progress.currentStreak,
       total: 7
     },
     {
       id: 3,
       name: 'Luz del Mundo',
-      description: 'Gana 1000 XP total',
-      icon: '💡',
-      earned: false,
-      progress: 650,
-      total: 1000
+      description: 'Completa 3 niveles',
+      icon: Lightbulb,
+      earned: progress.completedLevels.length >= 3,
+      progress: progress.completedLevels.length,
+      total: 3
     },
     {
       id: 4,
       name: 'Pescador de Hombres',
-      description: 'Completa 50 lecciones',
-      icon: '🎣',
-      earned: false,
-      progress: 23,
-      total: 50
+      description: 'Completa 5 niveles',
+      icon: Fish,
+      earned: progress.completedLevels.length >= 5,
+      progress: progress.completedLevels.length,
+      total: 5
     },
     {
       id: 5,
       name: 'Guerrero de Oración',
-      description: 'Completa 30 devocionales',
-      icon: '⚔️',
-      earned: false,
-      progress: 12,
+      description: 'Mantén una racha de 30 días',
+      icon: Sword,
+      earned: progress.currentStreak >= 30,
+      progress: progress.currentStreak,
       total: 30
     },
     {
       id: 6,
       name: 'Corazón Puro',
-      description: 'Completa el primer camino',
-      icon: '💎',
-      earned: false,
-      progress: 0,
-      total: 1
+      description: 'Alcanza 500 XP total',
+      icon: Gem,
+      earned: progress.totalXP >= 500,
+      progress: progress.totalXP,
+      total: 500
     }
   ];
 
@@ -101,7 +105,7 @@ const QuestsAndBadges = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-500 to-blue-600 p-4">
+    <div className="min-h-screen bg-gradient-to-b from-accent to-secondary p-4">
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className="text-center mb-6">
@@ -137,11 +141,13 @@ const QuestsAndBadges = () => {
         {activeTab === 'quests' ? (
           <div className="space-y-4">
             {/* Challenge completed banner */}
-            <div className="bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl p-6 text-center text-white">
-              <div className="text-4xl mb-2">🎉</div>
-              <h2 className="text-xl font-bold mb-1">¡Desafío completado!</h2>
-              <p className="text-sm opacity-90">Has completado 3 misiones este mes.</p>
-            </div>
+            {progress.completedLevels.length > 0 && (
+              <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-6 text-center text-white">
+                <Trophy className="w-12 h-12 mx-auto mb-2 text-white" />
+                <h2 className="text-xl font-bold mb-1">¡Excelente progreso!</h2>
+                <p className="text-sm opacity-90">Has completado {progress.completedLevels.length} niveles.</p>
+              </div>
+            )}
 
             {/* Daily Quests */}
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
@@ -208,12 +214,14 @@ const QuestsAndBadges = () => {
                 <div
                   key={badge.id}
                   className={`bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-center ${
-                    badge.earned ? 'border-2 border-yellow-400' : 'opacity-70'
+                    badge.earned ? 'border-2 border-primary' : 'opacity-70'
                   }`}
                 >
-                  <div className={`text-4xl mb-2 ${badge.earned ? '' : 'grayscale'}`}>
-                    {badge.icon}
-                  </div>
+                  <badge.icon 
+                    className={`w-12 h-12 mx-auto mb-2 ${
+                      badge.earned ? 'text-primary' : 'text-white/50'
+                    }`} 
+                  />
                   <h3 className="text-white font-bold text-sm mb-1">
                     {badge.name}
                   </h3>

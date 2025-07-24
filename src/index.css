@@ -7,13 +7,13 @@
   :root {
     /* Misión Juvenil D5 - Modo claro con base blanca */
     --background: 0 0% 100%; /* Blanco puro */
-    --foreground: 222.2 84% 4.9%; /* Texto oscuro */
+    --foreground: 259 25% 15%; /* Texto violeta oscuro para contraste */
 
     --card: 0 0% 100%; /* Blanco */
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 259 25% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 259 25% 15%;
 
     /* Naranja principal - Acción, fuego, avance (#F58634) */
     --primary: 25 93% 59%;
@@ -23,18 +23,18 @@
     --secondary: 200 56% 55%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 98%;
+    --muted-foreground: 259 15% 50%;
 
     /* Violeta oscuro - Profundidad espiritual (#473458) */
     --accent: 259 25% 31%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 200 30% 85%;
+    --input: 200 30% 95%;
     --ring: 25 93% 59%; /* Naranja para focus */
 
     --radius: 0.75rem;
@@ -42,14 +42,14 @@
 
   .dark {
     /* Modo oscuro con violeta profundo como base */
-    --background: 259 25% 31%; /* Violeta oscuro #473458 */
-    --foreground: 0 0% 100%;
+    --background: 259 25% 8%; /* Más oscuro para mejor contraste */
+    --foreground: 0 0% 95%;
 
-    --card: 259 25% 35%;
-    --card-foreground: 0 0% 100%;
+    --card: 259 25% 12%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 259 25% 31%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 259 25% 8%;
+    --popover-foreground: 0 0% 95%;
 
     /* Naranja principal mantiene luminosidad */
     --primary: 25 93% 59%; /* #F58634 */
@@ -59,17 +59,17 @@
     --secondary: 200 56% 65%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 259 25% 40%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 259 25% 15%;
+    --muted-foreground: 259 10% 65%;
 
-    --accent: 25 93% 59%; /* Naranja como accent en oscuro */
+    --accent: 259 25% 31%; /* Violeta en modo oscuro */
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 259 25% 40%;
-    --input: 259 25% 40%;
+    --border: 259 25% 20%;
+    --input: 259 25% 20%;
     --ring: 25 93% 59%;
   }
 }

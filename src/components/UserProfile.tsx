@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Flame, Star, Book, Target, Trophy, Crown, Lightbulb, Fish, Sword, Gem } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useGameProgress } from '@/hooks/useGameProgress';
 
@@ -22,12 +23,12 @@ const UserProfile = () => {
   };
 
   const badges = [
-    { name: "León de Judá", emoji: "🦁", earned: progress.totalXP >= 200 },
-    { name: "Embajador del Reino", emoji: "👑", earned: progress.currentStreak >= 7 },
-    { name: "Luz del Mundo", emoji: "💡", earned: progress.completedLevels.length >= 3 },
-    { name: "Pescador de Hombres", emoji: "🎣", earned: false },
-    { name: "Guerrero de Oración", emoji: "⚔️", earned: false },
-    { name: "Corazón Puro", emoji: "💎", earned: progress.totalXP >= 500 }
+    { name: "León de Judá", icon: Trophy, earned: progress.totalXP >= 200 },
+    { name: "Embajador del Reino", icon: Crown, earned: progress.currentStreak >= 7 },
+    { name: "Luz del Mundo", icon: Lightbulb, earned: progress.completedLevels.length >= 3 },
+    { name: "Pescador de Hombres", icon: Fish, earned: progress.completedLevels.length >= 5 },
+    { name: "Guerrero de Oración", icon: Sword, earned: progress.currentStreak >= 30 },
+    { name: "Corazón Puro", icon: Gem, earned: progress.totalXP >= 500 }
   ];
 
   return (
@@ -60,55 +61,63 @@ const UserProfile = () => {
       {/* Estadísticas Detalladas */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="glass-effect rounded-xl p-6 text-center space-y-3">
-          <div className="text-3xl">🔥</div>
+          <Flame className="w-8 h-8 text-primary mx-auto" />
           <div className="text-2xl font-bold text-primary">{userProfile.stats.currentStreak}</div>
-          <div className="text-xs text-muted-foreground">Días de Racha</div>
+          <div className="text-sm text-foreground font-medium">Días de Racha</div>
         </div>
         
         <div className="glass-effect rounded-xl p-6 text-center space-y-3">
-          <div className="text-3xl">⭐</div>
+          <Star className="w-8 h-8 text-secondary mx-auto" />
           <div className="text-2xl font-bold text-primary">{userProfile.stats.totalXP}</div>
-          <div className="text-xs text-muted-foreground">XP Total</div>
+          <div className="text-sm text-foreground font-medium">XP Total</div>
         </div>
         
         <div className="glass-effect rounded-xl p-6 text-center space-y-3">
-          <div className="text-3xl">📖</div>
+          <Book className="w-8 h-8 text-accent mx-auto" />
           <div className="text-2xl font-bold text-primary">{userProfile.stats.devotionalsCompleted}</div>
-          <div className="text-xs text-muted-foreground">Devocionales</div>
+          <div className="text-sm text-foreground font-medium">Devocionales</div>
         </div>
         
         <div className="glass-effect rounded-xl p-6 text-center space-y-3">
-          <div className="text-3xl">🎯</div>
+          <Target className="w-8 h-8 text-primary mx-auto" />
           <div className="text-2xl font-bold text-primary">{userProfile.stats.modulesCompleted}</div>
-          <div className="text-xs text-muted-foreground">Módulos</div>
+          <div className="text-sm text-foreground font-medium">Módulos</div>
         </div>
       </div>
 
       {/* Badges Cristianos */}
       <div className="glass-effect rounded-2xl p-8 space-y-6">
-        <h2 className="text-2xl font-bold text-primary text-center">🏆 Badges Espirituales</h2>
+        <h2 className="text-2xl font-bold text-primary text-center flex items-center justify-center gap-2">
+          <Trophy className="w-7 h-7" />
+          Badges Espirituales
+        </h2>
         
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-          {badges.map((badge, index) => (
-            <div
-              key={index}
-              className={`text-center p-6 rounded-xl border transition-all duration-300 ${
-                badge.earned 
-                  ? 'border-accent/30 bg-accent/5 hover:bg-accent/10' 
-                  : 'border-muted/30 bg-muted/5 opacity-50'
-              }`}
-            >
-              <div className={`text-4xl mb-3 ${badge.earned ? '' : 'grayscale'}`}>
-                {badge.emoji}
+          {badges.map((badge, index) => {
+            const IconComponent = badge.icon;
+            return (
+              <div
+                key={index}
+                className={`text-center p-6 rounded-xl border transition-all duration-300 ${
+                  badge.earned 
+                    ? 'border-primary/30 bg-primary/5 hover:bg-primary/10' 
+                    : 'border-muted/30 bg-muted/5 opacity-50'
+                }`}
+              >
+                <IconComponent 
+                  className={`w-12 h-12 mx-auto mb-3 ${
+                    badge.earned ? 'text-primary' : 'text-muted-foreground'
+                  }`} 
+                />
+                <h3 className={`text-sm font-medium ${badge.earned ? 'text-foreground' : 'text-muted-foreground'}`}>
+                  {badge.name}
+                </h3>
+                {badge.earned && (
+                  <div className="text-xs text-primary mt-1 font-bold">✅ Desbloqueado</div>
+                )}
               </div>
-              <h3 className={`text-sm font-medium ${badge.earned ? 'text-foreground' : 'text-muted-foreground'}`}>
-                {badge.name}
-              </h3>
-              {badge.earned && (
-                <div className="text-xs text-accent mt-1">✅ Desbloqueado</div>
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
