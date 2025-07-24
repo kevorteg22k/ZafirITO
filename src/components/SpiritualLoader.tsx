@@ -76,8 +76,8 @@ const SpiritualLoader = () => {
 
         {/* Dato curioso */}
         <div className="glass-effect rounded-lg p-6 space-y-2">
-          <h3 className="text-sm font-medium text-accent">💡 ¿Sabías que...?</h3>
-          <p className="text-sm text-foreground/80">
+          <h3 className="text-sm font-medium text-primary">💡 ¿Sabías que...?</h3>
+          <p className="text-sm text-white/80">
             {biblicalFacts[currentFact]}
           </p>
         </div>

@@ -76,13 +76,13 @@ const DailyDevotional = () => {
     return (
       <div className="glass-effect rounded-2xl p-8 text-center space-y-6">
         <div className="text-6xl animate-divine-pulse">🎉</div>
-        <h2 className="text-2xl font-bold text-primary">¡Devocional Completado!</h2>
-        <p className="text-muted-foreground">
+        <h2 className="text-2xl font-bold text-white">¡Devocional Completado!</h2>
+        <p className="text-white/80">
           Has ganado {devotional.xp} XP por completar tu devocional diario
         </p>
         <div className="glass-effect rounded-lg p-4 max-w-md mx-auto">
-          <h3 className="text-sm font-medium text-accent mb-2">Tu reflexión:</h3>
-          <p className="text-sm text-foreground/80 italic">"{userReflection}"</p>
+          <h3 className="text-sm font-medium text-primary mb-2">Tu reflexión:</h3>
+          <p className="text-sm text-white/80 italic">"{userReflection}"</p>
         </div>
         <button
           onClick={() => {
@@ -108,17 +108,17 @@ const DailyDevotional = () => {
       <div className="glass-effect rounded-2xl p-8 space-y-6">
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-block bg-accent/20 px-4 py-2 rounded-full text-sm font-medium text-accent">
+          <div className="inline-block bg-primary/20 px-4 py-2 rounded-full text-sm font-medium text-primary">
             ✨ {devotional.title}
           </div>
         </div>
 
         {/* Verse */}
         <div className="text-center space-y-4">
-          <blockquote className="scripture-text text-2xl max-w-2xl mx-auto">
+          <blockquote className="scripture-text text-2xl max-w-2xl mx-auto text-white">
             "{devotional.verse}"
           </blockquote>
-          <cite className="text-lg text-accent font-medium">
+          <cite className="text-lg text-primary font-medium">
             — {devotional.reference}
           </cite>
         </div>
@@ -126,7 +126,7 @@ const DailyDevotional = () => {
         {/* Reflection */}
         <div className="glass-effect rounded-xl p-6 space-y-4">
           <h3 className="text-lg font-semibold text-primary">Reflexión</h3>
-          <p className="text-foreground/90 leading-relaxed">
+          <p className="text-white/90 leading-relaxed">
             {devotional.reflection}
           </p>
         </div>
@@ -134,7 +134,7 @@ const DailyDevotional = () => {
         {/* Question */}
         <div className="glass-effect rounded-xl p-6 space-y-4">
           <h3 className="text-lg font-semibold text-primary">Pregunta para Reflexionar</h3>
-          <p className="text-foreground/90 font-medium">
+          <p className="text-white/90 font-medium">
             {devotional.question}
           </p>
           
@@ -156,16 +156,16 @@ const DailyDevotional = () => {
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                 isFavorite 
                   ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' 
-                  : 'glass-effect border border-primary/20 text-muted-foreground hover:text-primary'
-              }`}
-            >
+                   : 'glass-effect border border-primary/20 text-white hover:text-primary'
+               }`}
+             >
               <Heart className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />
               {isFavorite ? 'Favorito' : 'Favorito'}
             </button>
             
             <button
               onClick={handleShare}
-              className="flex items-center gap-2 px-4 py-2 glass-effect border border-primary/20 text-muted-foreground hover:text-primary rounded-lg font-medium transition-colors"
+              className="flex items-center gap-2 px-4 py-2 glass-effect border border-primary/20 text-white hover:text-primary rounded-lg font-medium transition-colors"
             >
               <Share className="w-4 h-4" />
               Compartir
