@@ -70,6 +70,7 @@ const modules = [
 const ModuleGrid = () => {
   const [activeGame, setActiveGame] = useState<string | null>(null);
   const [userXP, setUserXP] = useState(0);
+  const [userLives, setUserLives] = useState(3);
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -98,17 +99,21 @@ const ModuleGrid = () => {
     setActiveGame(null);
   };
 
+  const handleLoseLife = () => {
+    setUserLives(prev => Math.max(0, prev - 1));
+  };
+
   // Render game component based on activeGame
   if (activeGame === 'verso-mix') {
-    return <VersoMix onComplete={handleGameComplete} onExit={handleGameExit} />;
+    return <VersoMix onComplete={handleGameComplete} onExit={handleGameExit} onLoseLife={handleLoseLife} currentLives={userLives} />;
   }
   
   if (activeGame === 'emojiverso') {
-    return <Emojiverso onComplete={handleGameComplete} onExit={handleGameExit} />;
+    return <Emojiverso onComplete={handleGameComplete} onExit={handleGameExit} onLoseLife={handleLoseLife} currentLives={userLives} />;
   }
   
   if (activeGame === 'relleno-divino') {
-    return <RellenoDivino onComplete={handleGameComplete} onExit={handleGameExit} />;
+    return <RellenoDivino onComplete={handleGameComplete} onExit={handleGameExit} onLoseLife={handleLoseLife} currentLives={userLives} />;
   }
 
   return (

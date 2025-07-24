@@ -59,22 +59,25 @@ const LearningPath = () => {
     setActiveLevelId(null);
   };
 
-
   const handleGameExit = () => {
     setActiveGame(null);
     setActiveLevelId(null);
   };
 
+  const handleLoseLife = async () => {
+    await loseLife();
+  };
+
   const renderGame = () => {
     switch (activeGame) {
       case 'verso-mix':
-        return <VersoMix onComplete={handleGameComplete} onExit={handleGameExit} />;
+        return <VersoMix onComplete={handleGameComplete} onExit={handleGameExit} onLoseLife={handleLoseLife} currentLives={progress.currentLives} />;
       case 'emojiverso':  
-        return <Emojiverso onComplete={handleGameComplete} onExit={handleGameExit} />;
+        return <Emojiverso onComplete={handleGameComplete} onExit={handleGameExit} onLoseLife={handleLoseLife} currentLives={progress.currentLives} />;
       case 'relleno-divino':
-        return <RellenoDivino onComplete={handleGameComplete} onExit={handleGameExit} />;
+        return <RellenoDivino onComplete={handleGameComplete} onExit={handleGameExit} onLoseLife={handleLoseLife} currentLives={progress.currentLives} />;
       case 'verso-completo':
-        return <VersoCompleto onComplete={handleGameComplete} onExit={handleGameExit} />;
+        return <VersoCompleto onComplete={handleGameComplete} onExit={handleGameExit} onLoseLife={handleLoseLife} currentLives={progress.currentLives} />;
       default:
         return null;
     }
