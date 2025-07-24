@@ -41,18 +41,18 @@ const UserProfile = () => {
           <div className="text-center md:text-left space-y-3">
             <h1 className="text-3xl font-bold text-primary">{userProfile.name}</h1>
             <div className="space-y-1">
-              <p className="text-lg text-accent font-medium">{userProfile.level}</p>
-              <p className="text-sm text-muted-foreground">{userProfile.country}</p>
+              <p className="text-lg text-secondary font-medium">{userProfile.level}</p>
+              <p className="text-sm text-white/70">{userProfile.country}</p>
               {isGuest && (
-                <p className="text-sm text-yellow-400 font-medium">
+                <p className="text-sm text-primary font-medium">
                   🎯 Modo Invitado - Regístrate para guardar tu progreso
                 </p>
               )}
             </div>
             
             <div className="glass-effect rounded-lg p-4 max-w-md">
-              <h3 className="text-sm font-medium text-accent mb-2">💖 Versículo Favorito</h3>
-              <p className="text-sm italic text-foreground/90">"{userProfile.favoriteVerse}"</p>
+              <h3 className="text-sm font-medium text-white mb-2">💖 Versículo Favorito</h3>
+              <p className="text-sm italic text-white/90">"{userProfile.favoriteVerse}"</p>
             </div>
           </div>
         </div>
@@ -63,32 +63,32 @@ const UserProfile = () => {
         <div className="glass-effect rounded-xl p-6 text-center space-y-3">
           <Flame className="w-8 h-8 text-primary mx-auto" />
           <div className="text-2xl font-bold text-primary">{userProfile.stats.currentStreak}</div>
-          <div className="text-sm text-foreground font-medium">Días de Racha</div>
+          <div className="text-sm text-white font-medium">Días de Racha</div>
         </div>
         
         <div className="glass-effect rounded-xl p-6 text-center space-y-3">
           <Star className="w-8 h-8 text-secondary mx-auto" />
           <div className="text-2xl font-bold text-primary">{userProfile.stats.totalXP}</div>
-          <div className="text-sm text-foreground font-medium">XP Total</div>
+          <div className="text-sm text-white font-medium">XP Total</div>
         </div>
         
         <div className="glass-effect rounded-xl p-6 text-center space-y-3">
-          <Book className="w-8 h-8 text-accent mx-auto" />
+          <Book className="w-8 h-8 text-secondary mx-auto" />
           <div className="text-2xl font-bold text-primary">{userProfile.stats.devotionalsCompleted}</div>
-          <div className="text-sm text-foreground font-medium">Devocionales</div>
+          <div className="text-sm text-white font-medium">Devocionales</div>
         </div>
         
         <div className="glass-effect rounded-xl p-6 text-center space-y-3">
           <Target className="w-8 h-8 text-primary mx-auto" />
           <div className="text-2xl font-bold text-primary">{userProfile.stats.modulesCompleted}</div>
-          <div className="text-sm text-foreground font-medium">Módulos</div>
+          <div className="text-sm text-white font-medium">Módulos</div>
         </div>
       </div>
 
       {/* Badges Cristianos */}
       <div className="glass-effect rounded-2xl p-8 space-y-6">
-        <h2 className="text-2xl font-bold text-primary text-center flex items-center justify-center gap-2">
-          <Trophy className="w-7 h-7" />
+        <h2 className="text-2xl font-bold text-white text-center flex items-center justify-center gap-2">
+          <Trophy className="w-7 h-7 text-primary" />
           Badges Espirituales
         </h2>
         
@@ -106,10 +106,10 @@ const UserProfile = () => {
               >
                 <IconComponent 
                   className={`w-12 h-12 mx-auto mb-3 ${
-                    badge.earned ? 'text-primary' : 'text-muted-foreground'
+                    badge.earned ? 'text-primary' : 'text-white/30'
                   }`} 
                 />
-                <h3 className={`text-sm font-medium ${badge.earned ? 'text-foreground' : 'text-muted-foreground'}`}>
+                <h3 className={`text-sm font-medium ${badge.earned ? 'text-white' : 'text-white/50'}`}>
                   {badge.name}
                 </h3>
                 {badge.earned && (
@@ -128,13 +128,13 @@ const UserProfile = () => {
             ✏️ Editar Perfil
           </button>
         )}
-        <button className="px-6 py-3 glass-effect border border-primary/20 text-primary rounded-xl font-medium hover:bg-primary/5 transition-colors duration-200">
+        <button className="px-6 py-3 glass-effect border border-white/20 text-white rounded-xl font-medium hover:bg-white/10 transition-colors duration-200">
           📊 Ver Progreso Detallado
         </button>
         {(user || isGuest) && (
           <button 
             onClick={signOut}
-            className="px-6 py-3 bg-red-500/20 border border-red-500/20 text-red-400 rounded-xl font-medium hover:bg-red-500/30 transition-colors duration-200"
+            className="px-6 py-3 bg-red-500/20 border border-red-500/30 text-red-300 rounded-xl font-medium hover:bg-red-500/30 transition-colors duration-200"
           >
             🚪 {isGuest ? 'Salir del Modo Invitado' : 'Cerrar Sesión'}
           </button>

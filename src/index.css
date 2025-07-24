@@ -185,17 +185,18 @@
     @apply bg-red-600/90 border-red-500;
   }
 
-  /* Glass effect mejorado */
+  /* Glass effect mejorado con mejor contraste */
   .glass-effect {
-    background: rgba(30, 41, 59, 0.8);
+    background: hsl(var(--accent) / 0.8);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(124, 58, 237, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid hsl(var(--accent) / 0.3);
+    box-shadow: 0 8px 32px hsl(var(--accent) / 0.4);
+    color: hsl(var(--accent-foreground));
   }
 
   /* Botones de juego */
   .game-button {
-    @apply bg-slate-700 hover:bg-slate-600 text-slate-100 font-bold py-3 px-4 rounded-lg border border-slate-600 hover:border-purple-500 transition-all duration-200 active:scale-95;
+    @apply bg-accent hover:bg-accent/90 text-accent-foreground font-bold py-3 px-4 rounded-lg border border-accent/30 hover:border-primary transition-all duration-200 active:scale-95;
   }
 
   .game-button.selected {
